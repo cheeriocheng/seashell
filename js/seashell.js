@@ -5,6 +5,7 @@ var effect;
 var mobile = false;
 var globe
 var group
+var spine
 
 init();
 animate();
@@ -22,35 +23,68 @@ function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 3);
+    camera.position.set(0, 0, 8);
     camera.focalLength = camera.position.distanceTo(scene.position);
     camera.lookAt(scene.position);
 
     controls = new THREE.OrbitControls(camera);
-    controls.autoRotate = true;
+    controls.autoRotate = false; //true;
     controls.enablePan = false;
 
-    // central object
+    //coordinate sys
+    // X axis is red. The Y axis is green. The Z axis is blue.
+    object = new THREE.AxisHelper( 1 );             
+    scene.add( object );
+    
+    
 
-    var cubeMap = getCubeMap(1)
+    //line demo 
+   var material = new THREE.LineBasicMaterial({
+        color: 0x00cccc
+    });
 
-    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, envMap: getCubeMap(1), color: 0xFFFFFF, shading: THREE.FlatShading});
-    var geometry = new THREE.SphereGeometry(2.6, 50, 50)//  30, 30)
+    // var geometry = new THREE.Geometry();
+    // geometry.vertices.push(
+    //     new THREE.Vector3( -10, 0, 0 ),
+    //     new THREE.Vector3( 0, 10, 0 ),
+    //     new THREE.Vector3( 10, 0, 0 )
+    // );
 
-    var mod = .3;
-    for (var i = 0; i < geometry.vertices.length; i++) {
-        var v = geometry.vertices[i]
-        var ran = Math.random()
-        v.x *= ran;
-        v.y *= ran;
-        v.z *= ran;
-    }
-    globe = new THREE.Mesh(geometry, material);
-    scene.add(globe);
+    // var line = new THREE.Line( geometry, material );
+    // scene.add( line );
+
+    // Seashell 'spine'
+
+    spine  = spiral() ;
+    // console.log(spine);
+
+    //line drawing example https://github.com/mrdoob/three.js/wiki/Drawing-lines 
+
+     var geometry = new THREE.Geometry();
+     for (var i = 0 ; i< spine.length; i++){
+        geometry.vertices.push(spine[i]);    
+     }
+      var line = new THREE.Line( geometry, material );
+    scene.add( line );
+    
+
+    // var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, envMap: getCubeMap(1), color: 0xFFFFFF, shading: THREE.FlatShading});
+    // var geometry = new THREE.SphereGeometry(2.6, 50, 50)//  30, 30)
+
+    // var mod = .3;
+    // for (var i = 0; i < geometry.vertices.length; i++) {
+    //     var v = geometry.vertices[i]
+    //     var ran = Math.random()
+    //     v.x *= ran;
+    //     v.y *= ran;
+    //     v.z *= ran;
+    // }
+    // globe = new THREE.Mesh(geometry, material);
+    // scene.add(globe);
 
 
     // Background
-
+    var cubeMap = getCubeMap(1)
     var cubeShader = THREE.ShaderLib['cube'];
     cubeShader.uniforms['tCube'].value = cubeMap;
 
@@ -65,37 +99,6 @@ function init() {
     var skyBox = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), skyBoxMaterial);
     scene.add(skyBox);
 
-    // cubes
-
-    group = new THREE.Object3D();
-    for (var _x = -3; _x <= 3; _x++) {
-        for (var _y = -3; _y <= 3; _y++) {
-            for (var _z = -3; _z <= 3; _z++) {
-                var geo = new THREE.BoxGeometry(.1, .1, .1, 1, 1, 1)
-                var mesh = new THREE.Mesh(geo, material)
-                mesh.position.set(_x, _y, _z)
-                group.add(mesh);
-            }
-        }
-    }
-
-    // merge
-
-    var geom = new THREE.Geometry()
-    for (var i = 0; i < group.children.length; i++) {
-        group.children[i].updateMatrix();
-        geom.merge(group.children[i].geometry, group.children[i].matrix);
-    }
-    var mod = .3;
-    for (var i = 0; i < geom.vertices.length; i++) {
-        var v = geom.vertices[i]
-        v.x += (Math.random() - .5) * mod
-        v.y += (Math.random() - .5) * mod
-        v.z += (Math.random() - .5) * mod
-    }
-
-    group = new THREE.Mesh(geom, material);
-    scene.add(group)
 
     // light
 
