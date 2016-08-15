@@ -5,7 +5,8 @@ var effect;
 var mobile = false;
 var globe
 var group
-var spine
+var spiral
+var shell 
 
 init();
 animate();
@@ -38,35 +39,26 @@ function init() {
     
     
 
-    //line demo 
-   var material = new THREE.LineBasicMaterial({
+  
+    //--------test 
+    var ss = new Seashell();
+    spiral = ss.spiral; 
+
+    var material = new THREE.LineBasicMaterial({
         color: 0x00cccc
     });
 
-    // var geometry = new THREE.Geometry();
-    // geometry.vertices.push(
-    //     new THREE.Vector3( -10, 0, 0 ),
-    //     new THREE.Vector3( 0, 10, 0 ),
-    //     new THREE.Vector3( 10, 0, 0 )
-    // );
-
-    // var line = new THREE.Line( geometry, material );
-    // scene.add( line );
-
-    // Seashell 'spine'
-
-    spine  = spiral() ;
+    var geometry = new THREE.Geometry();
+    // spine  = spiral() ; 
     // console.log(spine);
 
-    //line drawing example https://github.com/mrdoob/three.js/wiki/Drawing-lines 
-
-     var geometry = new THREE.Geometry();
-     for (var i = 0 ; i< spine.length; i++){
-        geometry.vertices.push(spine[i]);    
-     }
-      var line = new THREE.Line( geometry, material );
+    for (var i = 0 ; i< spiral.length; i++){
+        geometry.vertices.push(spiral[i]);    
+    }
+    var line = new THREE.Line( geometry, material );
     scene.add( line );
     
+
 
     // var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, envMap: getCubeMap(1), color: 0xFFFFFF, shading: THREE.FlatShading});
     // var geometry = new THREE.SphereGeometry(2.6, 50, 50)//  30, 30)
