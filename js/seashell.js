@@ -49,14 +49,14 @@ function init() {
     var geometrySpiral = new THREE.Geometry();
   
 
-    var c = 0x00000f;
+
 
     for (var i = 0 ; i< ss.spiral.length; i++){
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 
        
-       
+       var c = 0x011000 + 0x0000e0* i ;
       
        for (var j = 0 ; j < ss._shell[i].length; j++){
            // oneEllipse= new THREE.Geometry(); 
@@ -64,15 +64,16 @@ function init() {
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-       c = c + 0x00001e + 0x010000*i ;
 
        // console.log(c)
        scene.add( new THREE.Line(oneEllipse, 
                         new THREE.LineBasicMaterial({
-                            color: c
+                            color: c,
+                            linewidth: 3
                         }))
         );
     }
+    //render spiral spine
     var spineLine = new THREE.Line( geometrySpiral, material );
     scene.add( spineLine );
 

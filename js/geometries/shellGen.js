@@ -24,9 +24,13 @@ class Seashell {
         this.N=0;
 
 
+       // this.loadHorseConch() ; 
+
         this._spiral = null;
         this._shell = null; 
     }
+
+
 
     get spiral (){
         if (this._spiral === null) {
@@ -65,9 +69,9 @@ class Seashell {
               
               // add surface manipulations
               var surfrad = 0;
-              // if (W1==0 || W2==0 || N==0) surfrad = 0;
+              // if (this.W1==0 || this.W2==0 || this.N==0) surfrad = 0;
               // else {
-              //   float lt = (TWO_PI / N) * ( N*theta / TWO_PI - int(N*theta / TWO_PI) );
+              //   float lt = (Math.PI * 2 / this.N) * ( this.N*this.theta / Math.PI / 2 - int(this.N* theta / Math.PI / 2) );
               //   surfrad = L * exp( -( pow(2*(s-P)/W1, 2) + pow(2*lt/W2, 2) ) );          
               // }
               r2 += surfrad;
@@ -99,7 +103,30 @@ class Seashell {
     }
 
 
+    loadHorseConch(){
+        
+        this.turns = 6; // how many turns in the shell
+        this.deltaTheta = degToRad(10) ; //degrees per new session
 
+        this.D = 1 ; 
+        this.steps = 0; //how many ellipses C to draw; to be calculated
+        this.cSteps = 36; //how many straight lines makes an ellipse C
+        this.alpha= degToRad(84); 
+        this.beta=degToRad(-19); 
+        this.phi=degToRad(45); 
+        this.mu=degToRad(1); 
+        this.omega=degToRad(-2); 
+        
+        this.A =  0.5;
+        this.a=0.4; //1.2; 
+        this.b=.14 ; // 2.0; 
+        this.L=8; 
+        this.P=0; 
+        this.W1=6; 
+        this.W2=27; 
+        this.N=8;
+
+    }
 
 }
 
