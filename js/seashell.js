@@ -14,7 +14,6 @@ animate();
 function init() {
 
     // setup
-
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -44,7 +43,7 @@ function init() {
     // var spiral = ss.spiral; 
     
     var material = new THREE.LineBasicMaterial({
-        color: 0xcc0000
+        color: 0xeeeeee
     });
 
     var geometrySpiral = new THREE.Geometry();
@@ -65,7 +64,7 @@ function init() {
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-       c = c + 0x00001e ;
+       c = c + 0x00001e + 0x010000*i ;
 
        // console.log(c)
        scene.add( new THREE.Line(oneEllipse, 
