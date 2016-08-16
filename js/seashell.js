@@ -65,13 +65,14 @@ function init() {
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-       c = c + 0x00000e ;
+       c = c + 0x00001e ;
+
        // console.log(c)
        scene.add( new THREE.Line(oneEllipse, 
                         new THREE.LineBasicMaterial({
                             color: c
                         }))
-                );
+        );
     }
     var spineLine = new THREE.Line( geometrySpiral, material );
     scene.add( spineLine );

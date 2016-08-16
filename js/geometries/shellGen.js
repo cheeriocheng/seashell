@@ -72,14 +72,18 @@ class Seashell {
               // }
               r2 += surfrad;
               
-              x = Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
-              y = Math.cos(s + this.phi) * Math.sin(theta + this.omega) * r2 * rad;
-              z = Math.sin(s + this.phi)                      * r2 * rad;
+              x += Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
+              y += Math.cos(s + this.phi) * Math.sin(theta + this.omega) * r2 * rad;
+              z += Math.sin(s + this.phi) * r2 * rad;
               
               // adjust orientation of the 
-              x -= Math.sin(this.mu) * Math.sin(s + this.phi) * Math.sin(theta + this.omega) * r2;
-              y += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2;
-              z *= Math.cos(this.mu);
+              // x -= Math.sin(this.mu) * Math.sin(s + this.phi) * Math.sin(theta + this.omega) * r2;
+              x -= Math.sin(this.mu) * Math.sin(s + this.phi) * Math.sin(theta + this.omega) * r2 * rad ;
+
+              // y += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2 ;
+              y += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad;
+              // z *= Math.cos(this.mu);
+              // z -= this.A * Math.cos(this.beta) * rad ; 
               
               shellEllipseArray[i].push(new THREE.Vector3(x,y,z));
               
