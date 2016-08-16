@@ -5,8 +5,8 @@ var effect;
 var mobile = false;
 var globe
 var group
-var spiral
-var shell 
+
+var ss 
 
 init();
 animate();
@@ -39,39 +39,39 @@ function init() {
     
   
     
-    var ss = new Seashell();
+    ss = new Seashell();
     //spine of seashell 
-    spiral = ss.spiral; 
+    // var spiral = ss.spiral; 
     
     var material = new THREE.LineBasicMaterial({
         color: 0xcc0000
     });
 
-    var geometry = new THREE.Geometry();
-    // spine  = spiral() ; 
-    // console.log(spine);
+    var geometrySpiral = new THREE.Geometry();
+  
 
-    for (var i = 0 ; i< spiral.length; i++){
-        geometry.vertices.push(spiral[i]);    
+
+    for (var i = 0 ; i< ss.spiral.length; i++){
+        geometrySpiral.vertices.push(ss.spiral[i]);  
+
+       var oneEllipse = new THREE.Geometry(); 
+       // var red = i *10; 
+        // var oneColor  = new THREE.Color("rgb(red, 0, 0)");
+        var oneColor = new THREE.LineBasicMaterial({
+        color: 0xcccccc
+            });
+
+       for (var j = 0 ; j < ss._shell[i].length; j++){
+           // oneEllipse= new THREE.Geometry(); 
+           oneEllipse.vertices.push(ss._shell[i][j]);  
+
+       }
+       oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
+
+       scene.add( new THREE.Line(oneEllipse, oneColor));
     }
-    var line = new THREE.Line( geometry, material );
-    scene.add( line );
-    
-
-
-    // var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, envMap: getCubeMap(1), color: 0xFFFFFF, shading: THREE.FlatShading});
-    // var geometry = new THREE.SphereGeometry(2.6, 50, 50)//  30, 30)
-
-    // var mod = .3;
-    // for (var i = 0; i < geometry.vertices.length; i++) {
-    //     var v = geometry.vertices[i]
-    //     var ran = Math.random()
-    //     v.x *= ran;
-    //     v.y *= ran;
-    //     v.z *= ran;
-    // }
-    // globe = new THREE.Mesh(geometry, material);
-    // scene.add(globe);
+    var spineLine = new THREE.Line( geometrySpiral, material );
+    scene.add( spineLine );
 
 
     // Background
