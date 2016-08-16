@@ -37,15 +37,14 @@ function init() {
     object = new THREE.AxisHelper( 1 );             
     scene.add( object );
     
-    
-
   
-    //--------test 
+    
     var ss = new Seashell();
+    //spine of seashell 
     spiral = ss.spiral; 
-
+    
     var material = new THREE.LineBasicMaterial({
-        color: 0x00cccc
+        color: 0xcc0000
     });
 
     var geometry = new THREE.Geometry();
