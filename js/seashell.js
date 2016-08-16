@@ -50,25 +50,28 @@ function init() {
     var geometrySpiral = new THREE.Geometry();
   
 
+    var c = 0x00000f;
 
     for (var i = 0 ; i< ss.spiral.length; i++){
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 
-       // var red = i *10; 
-        // var oneColor  = new THREE.Color("rgb(red, 0, 0)");
-        var oneColor = new THREE.LineBasicMaterial({
-        color: 0xcccccc
-            });
-
+       
+       
+      
        for (var j = 0 ; j < ss._shell[i].length; j++){
            // oneEllipse= new THREE.Geometry(); 
            oneEllipse.vertices.push(ss._shell[i][j]);  
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-
-       scene.add( new THREE.Line(oneEllipse, oneColor));
+       c = c + 0x00000e ;
+       // console.log(c)
+       scene.add( new THREE.Line(oneEllipse, 
+                        new THREE.LineBasicMaterial({
+                            color: c
+                        }))
+                );
     }
     var spineLine = new THREE.Line( geometrySpiral, material );
     scene.add( spineLine );

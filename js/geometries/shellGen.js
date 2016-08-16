@@ -2,20 +2,21 @@ class Seashell {
 
 
     constructor(A){
-        this.A =  undefined !== A ? A : 2.5; 
+        this.A =  undefined !== A ? A : 0.1;  //2.5
       
-      
+        this.turns = 6 * Math.PI;
+
         this.D = 1 ;
-        this.steps =6; 
-        this.cSteps = 12; //for each ellipse C
+        this.steps = 36; 
+        this.cSteps = 24; //for each ellipse C
         this.alpha= degToRad(83); 
         this.beta=degToRad(42); 
         this.phi=degToRad(70); 
         this.mu=degToRad(10); 
         this.omega=degToRad(30); 
         
-        this.a=1.2; 
-        this.b=2.0; 
+        this.a=0.6; //1.2; 
+        this.b=1.0 ; // 2.0; 
         this.L=0; 
         this.P=0; 
         this.W1=0; 
@@ -38,10 +39,12 @@ class Seashell {
     calcSpiral(){
         var spiralPointArray = [];
         var shellEllipseArray = [];
+        this.steps = Math.floor ( this.steps * this.turns / 10.0);
+
      
         for ( var i = 0; i < this.steps; i ++ ) {
             
-            var theta = 0.5* i ; // Math.degToRad ( i * 30 ) ; // maplinear (i, 0, n, 0, turns);
+            var theta = degToRad ( i * 10 ) ; // maplinear (i, 0, n, 0, turns);
             var rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );
 
 
