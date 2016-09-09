@@ -8,8 +8,20 @@ var group
 
 var ss 
 
+var exportButton, floatingDiv;
+
+
 init();
 animate();
+
+function exportToObj() {
+
+    var exporter = new THREE.OBJExporter();
+    var result = exporter.parse( scene );
+    floatingDiv.style.display = 'block';
+    floatingDiv.innerHTML = result.split( '\n' ).join ( '<br />' );
+
+}
 
 function init() {
 
@@ -69,7 +81,7 @@ function init() {
        scene.add( new THREE.Line(oneEllipse, 
                         new THREE.LineBasicMaterial({
                             color: c,
-                            linewidth: 3
+                            linewidth: 1
                         }))
         );
     }
@@ -78,21 +90,103 @@ function init() {
     scene.add( spineLine );
 
 
-    // Background
-    var cubeMap = getCubeMap(1)
-    var cubeShader = THREE.ShaderLib['cube'];
-    cubeShader.uniforms['tCube'].value = cubeMap;
+    // // // extrusion 
+    // var geometrySpiralTest = new THREE.Geometry();
 
-    var skyBoxMaterial = new THREE.ShaderMaterial({
-        fragmentShader: cubeShader.fragmentShader,
-        vertexShader: cubeShader.vertexShader,
-        uniforms: cubeShader.uniforms,
-        depthWrite: false,
-        side: THREE.BackSide
-    });
+    //  for (var i = 0 ; i< ss.spiral.length; i++){
+    //     geometrySpiralTest.vertices.push(ss.spiral[i]);  
+    // }
+    // var extrudeSettings = {
+    //     steps           : 200,
+    //     bevelEnabled    : false,
+    //     extrudePath     : geometrySpiralTest
+    // };
 
-    var skyBox = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), skyBoxMaterial);
-    scene.add(skyBox);
+    //  var pts = [], numPts = 5;
+
+    //             for ( var i = 0; i < numPts * 2; i ++ ) {
+
+    //                 var l = i % 2 == 1 ? 10 : 20;
+
+    //                 var a = i / numPts * Math.PI;
+
+    //                 pts.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+
+    //             }
+
+    // var shape = new THREE.Shape( pts );
+    // var material2 = new THREE.MeshLambertMaterial( { color: 0xff8000, wireframe: false } );
+
+
+    // var geometryExtrusion = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+    //     var mesh = new THREE.Mesh( geometry, material2 );
+
+    //             scene.add( mesh );
+
+
+    var randomPoints = [];
+
+    for ( var i = 0; i <  ss.spiral.length ; i ++ ) {
+
+        randomPoints.push( ss.spiral[i] );
+
+    }
+
+    var randomSpline =  new THREE.CatmullRomCurve3( randomPoints );
+
+    
+
+    var extrudeSettings = {
+        steps           : 200,
+        bevelEnabled    : false,
+        extrudePath     : randomSpline
+          // extrudePath     : closedSpline
+    };
+
+
+
+
+    var pts = [], count = 10;
+
+    for ( var i = 0; i < count; i ++ ) {
+
+        var l = 0.3;
+
+        var a = 2 * i / count * Math.PI;
+
+        pts.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+
+    }
+
+
+    var shape = new THREE.Shape( pts );
+
+    var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+
+    var material2 = new THREE.MeshLambertMaterial( { color: 0xff8000, wireframe: false } );
+
+    var mesh = new THREE.Mesh( geometry, material2 );
+
+    scene.add( mesh );
+
+
+
+
+    // // Background
+    // var cubeMap = getCubeMap(1)
+    // var cubeShader = THREE.ShaderLib['cube'];
+    // cubeShader.uniforms['tCube'].value = cubeMap;
+
+    // var skyBoxMaterial = new THREE.ShaderMaterial({
+    //     fragmentShader: cubeShader.fragmentShader,
+    //     vertexShader: cubeShader.vertexShader,
+    //     uniforms: cubeShader.uniforms,
+    //     depthWrite: false,
+    //     side: THREE.BackSide
+    // });
+
+    // var skyBox = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), skyBoxMaterial);
+    // scene.add(skyBox);
 
 
     // light
@@ -105,6 +199,13 @@ function init() {
 
     window.addEventListener('deviceorientation', setOrientationControls, true);
     window.addEventListener('resize', onWindowResize, false);
+
+    exportButton = document.getElementById( 'export' );
+    exportButton.addEventListener( 'click', function() { exportToObj(); });
+
+     floatingDiv = document.createElement( 'div' );
+                floatingDiv.className = 'floating';
+                document.body.appendChild( floatingDiv );
 
 }
 

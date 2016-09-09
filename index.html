@@ -12,9 +12,50 @@
                 margin: 0px;
                 overflow: hidden;
             }
+
+
+            #info {
+                color: #fff;
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                text-align: center;
+                z-index: 100;
+                display: block;
+            }
+            div.floating {
+                color : #ffffff;
+                background : #000000;
+                opacity : 0.8;
+                width : 80%;
+                height : 80%;
+                position : absolute;
+                left : 10%;
+                top : 10%;
+                border : 1px solid #555555;
+                padding : 10px;
+                display : none;
+                overflow : auto;
+                z-index: 100;
+            }
+
+            span.link {
+
+                color: skyblue;
+                cursor: pointer;
+                text-decoration : underline;
+            }
+
+            a {
+                color: skyblue
+            }
         </style>
     </head>
     <body>
+
+        <span class="link" id="export">export to obj</span>
+        </div>
+
 
         <script src="js/third-party/threejs/three.js"></script>
         <script src="js/third-party/threejs/controls/DeviceOrientationControls.js"></script>
@@ -22,6 +63,7 @@
         <script src="js/third-party/threejs/effects/StereoEffect.js"></script>
         <script src="js/utils/helpers.js"></script>
         <script src= "js/geometries/shellGen.js"></script>
+        <script src= "js/geometries/OBJExporter.js"></script>
         <script src = "js/seashell.js"></script>
 
     </body>
