@@ -60,7 +60,22 @@ function init() {
 
     var geometrySpiral = new THREE.Geometry();
   
+    //cx
 
+ 
+
+
+    var extrudeShapePoints = [], count = 10;
+    for ( var i = 0; i < count; i ++ ) {
+        var l = 0.3;
+        var a = 2 * i / count * Math.PI;
+        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+    }
+
+    var extrudeShape = new THREE.Shape( extrudeShapePoints );
+
+     var extrudeMaterial = new THREE.MeshLambertMaterial( { color: 0xeeeeee, wireframe: false } );
+    //cx
 
 
     for (var i = 0 ; i< ss.spiral.length; i++){
@@ -69,6 +84,8 @@ function init() {
        var oneEllipse = new THREE.Geometry(); 
        
        var c = 0x011000 + 0x0000e0* i ;
+
+
       
        for (var j = 0 ; j < ss._shell[i].length; j++){
            // oneEllipse= new THREE.Geometry(); 
@@ -76,117 +93,34 @@ function init() {
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
+       //cx
 
+       var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
+       extusionSpline.closed = true;
+        var extrudeSettings = {
+        steps           : 10, //int. number of points used for subdividing segements of extrude spline
+        bevelEnabled    : false,
+        extrudePath     : extusionSpline
+    };
+    var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
+
+        var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
+
+        scene.add( mesh );
+
+        ////render the ellipse in single lines
        // console.log(c)
-       scene.add( new THREE.Line(oneEllipse, 
-                        new THREE.LineBasicMaterial({
-                            color: c,
-                            linewidth: 1
-                        }))
-        );
+       // scene.add( new THREE.Line(oneEllipse, 
+       //                  new THREE.LineBasicMaterial({
+       //                      color: c,
+       //                      linewidth: 1
+       //                  }))
+       //  );
     }
     //render spiral spine
-    var spineLine = new THREE.Line( geometrySpiral, material );
-    scene.add( spineLine );
+    // var spineLine = new THREE.Line( geometrySpiral, material );
+    // scene.add( spineLine );
 
-
-    // // // extrusion 
-    // var geometrySpiralTest = new THREE.Geometry();
-
-    //  for (var i = 0 ; i< ss.spiral.length; i++){
-    //     geometrySpiralTest.vertices.push(ss.spiral[i]);  
-    // }
-    // var extrudeSettings = {
-    //     steps           : 200,
-    //     bevelEnabled    : false,
-    //     extrudePath     : geometrySpiralTest
-    // };
-
-    //  var pts = [], numPts = 5;
-
-    //             for ( var i = 0; i < numPts * 2; i ++ ) {
-
-    //                 var l = i % 2 == 1 ? 10 : 20;
-
-    //                 var a = i / numPts * Math.PI;
-
-    //                 pts.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
-
-    //             }
-
-    // var shape = new THREE.Shape( pts );
-    // var material2 = new THREE.MeshLambertMaterial( { color: 0xff8000, wireframe: false } );
-
-
-    // var geometryExtrusion = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-    //     var mesh = new THREE.Mesh( geometry, material2 );
-
-    //             scene.add( mesh );
-
-
-    var randomPoints = [];
-
-    for ( var i = 0; i <  ss.spiral.length ; i ++ ) {
-
-        randomPoints.push( ss.spiral[i] );
-
-    }
-
-    var randomSpline =  new THREE.CatmullRomCurve3( randomPoints );
-
-    
-
-    var extrudeSettings = {
-        steps           : 200,
-        bevelEnabled    : false,
-        extrudePath     : randomSpline
-          // extrudePath     : closedSpline
-    };
-
-
-
-
-    var pts = [], count = 10;
-
-    for ( var i = 0; i < count; i ++ ) {
-
-        var l = 0.3;
-
-        var a = 2 * i / count * Math.PI;
-
-        pts.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
-
-    }
-
-
-    var shape = new THREE.Shape( pts );
-
-    var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-
-    var material2 = new THREE.MeshLambertMaterial( { color: 0xff8000, wireframe: false } );
-
-    var mesh = new THREE.Mesh( geometry, material2 );
-
-    scene.add( mesh );
-
-
-
-
-    // // Background
-    // var cubeMap = getCubeMap(1)
-    // var cubeShader = THREE.ShaderLib['cube'];
-    // cubeShader.uniforms['tCube'].value = cubeMap;
-
-    // var skyBoxMaterial = new THREE.ShaderMaterial({
-    //     fragmentShader: cubeShader.fragmentShader,
-    //     vertexShader: cubeShader.vertexShader,
-    //     uniforms: cubeShader.uniforms,
-    //     depthWrite: false,
-    //     side: THREE.BackSide
-    // });
-
-    // var skyBox = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), skyBoxMaterial);
-    // scene.add(skyBox);
 
 
     // light

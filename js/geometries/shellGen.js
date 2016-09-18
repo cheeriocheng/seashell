@@ -8,7 +8,7 @@ class Seashell {
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
-        this.cSteps = 64; //how many straight lines makes an ellipse C
+        this.cSteps = 10; //how many straight lines makes an ellipse C
         this.alpha= degToRad(83); 
         this.beta=degToRad(42); 
         this.phi=degToRad(70); 
