@@ -67,7 +67,7 @@ function init() {
 
     var extrudeShapePoints = [], count = 10;
     for ( var i = 0; i < count; i ++ ) {
-        var l = 0.3;
+        var l = 0.5;
         var a = 2 * i / count * Math.PI;
         extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
     }
@@ -78,7 +78,7 @@ function init() {
     //cx
 
 
-    for (var i = 0 ; i< ss.spiral.length; i++){
+    for (var i = 30 ; i< ss.spiral.length; i++){
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 
@@ -98,7 +98,7 @@ function init() {
        var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
        extusionSpline.closed = true;
         var extrudeSettings = {
-        steps           : 10, //int. number of points used for subdividing segements of extrude spline
+        steps           : 30, //int. number of points used for subdividing segements of extrude spline //10
         bevelEnabled    : false,
         extrudePath     : extusionSpline
     };

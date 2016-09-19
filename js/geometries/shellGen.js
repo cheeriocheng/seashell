@@ -3,8 +3,8 @@ class Seashell {
 
     constructor(A){
         this.A =  undefined !== A ? A : 0.25 ; //0.1
-        this.turns = 6; // how many turns in the shell
-        this.deltaTheta = degToRad(10) ; //degrees per new session
+        this.turns = 5; // how many turns in the shell
+        this.deltaTheta = degToRad(18) ; //degrees per new session
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
