@@ -8,7 +8,7 @@ var group
 
 var ss 
 
-var exportButton, floatingDiv;
+var exportButton//, floatingDiv;
 
 
 init();
@@ -18,10 +18,30 @@ function exportToObj() {
 
     var exporter = new THREE.OBJExporter();
     var result = exporter.parse( scene );
-    floatingDiv.style.display = 'block';
-    floatingDiv.innerHTML = result.split( '\n' ).join ( '<br />' );
+    // floatingDiv.style.display = 'block';
+    // floatingDiv.innerHTML = result.split( '\n' ).join ( '<br />' );
+    exportToFile("seashell.obj",result );
 
 }
+
+
+//reza
+function exportToFile( filename, data ) {
+  var pom = document.createElement( 'a' );
+  pom.href = URL.createObjectURL( new Blob( [ data ], { type : 'text/plain'} ) );
+  pom.download = filename;
+  document.body.appendChild( pom );
+
+  if( document.createEvent ) {
+    var event = document.createEvent( 'MouseEvents' );
+    event.initEvent( 'click', true, true );
+    pom.dispatchEvent( event );
+  }
+  else {
+    pom.click();
+  }
+};
+
 
 function init() {
 
@@ -57,58 +77,86 @@ function init() {
     var material = new THREE.LineBasicMaterial({
         color: 0xeeeeee
     });
+    //DRAW IN DOTS 
+    var sphere; 
+    var pos; 
+    var radius =0.2; //— sphere radius. Default is 50.
+    var widthSegments = 5; //— number of horizontal segments
+    var heightSegments = 5; 
+    for (var i = 60 ; i< ss.spiral.length; i++){
+        for (var j = 0 ; j < ss._shell[i].length; j++){
+           // oneEllipse= new THREE.Geometry(); 
+           // oneEllipse.vertices.push(ss._shell[i][j]);  
 
-    var geometrySpiral = new THREE.Geometry();
-  
-    //cx
+           //TODO SCALE UP 
+           if(j%8 ==0){
+            radius = 0.3 ;//1;
+           }else{
+            radius = 0.1; //0.5 //0.1 = one drop 
+           }
+           sphere = new THREE.Mesh( new THREE.SphereGeometry( radius, widthSegments, heightSegments ), material );
+           pos = ss._shell[i][j]; 
 
- 
+            sphere.position.set( pos.x, pos.y, pos.z );
+            scene.add( sphere );
 
 
-    var extrudeShapePoints = [], count = 10;
-    for ( var i = 0; i < count; i ++ ) {
-        var l = 0.5;
-        var a = 2 * i / count * Math.PI;
-        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+
+        }
     }
 
-    var extrudeShape = new THREE.Shape( extrudeShapePoints );
+    //DRAW IN TUBE -------
+    
 
-     var extrudeMaterial = new THREE.MeshLambertMaterial( { color: 0xeeeeee, wireframe: false } );
-    //cx
+    // var geometrySpiral = new THREE.Geometry();
+  
+
+    // var extrudeShapePoints = [], count = 10;
+    // for ( var i = 0; i < count; i ++ ) {
+    //     var l = 0.5;
+    //     var a = 2 * i / count * Math.PI;
+    //     extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+    // }
+
+    // var extrudeShape = new THREE.Shape( extrudeShapePoints );
+
+    //  var extrudeMaterial = new THREE.MeshLambertMaterial( { color: 0xeeeeee, wireframe: false } );
 
 
-    for (var i = 30 ; i< ss.spiral.length; i++){
-        geometrySpiral.vertices.push(ss.spiral[i]);  
 
-       var oneEllipse = new THREE.Geometry(); 
+    // for (var i = 30 ; i< ss.spiral.length; i++){
+    //     geometrySpiral.vertices.push(ss.spiral[i]);  
+
+    //    var oneEllipse = new THREE.Geometry(); 
        
-       var c = 0x011000 + 0x0000e0* i ;
+    //    var c = 0x011000 + 0x0000e0* i ;
 
 
       
-       for (var j = 0 ; j < ss._shell[i].length; j++){
-           // oneEllipse= new THREE.Geometry(); 
-           oneEllipse.vertices.push(ss._shell[i][j]);  
+    //    for (var j = 0 ; j < ss._shell[i].length; j++){
+    //        // oneEllipse= new THREE.Geometry(); 
+    //        oneEllipse.vertices.push(ss._shell[i][j]);  
 
-       }
-       oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-       //cx
+    //    }
+    //    oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
+    //    //cx
 
-       var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
-       extusionSpline.closed = true;
-        var extrudeSettings = {
-        steps           : 30, //int. number of points used for subdividing segements of extrude spline //10
-        bevelEnabled    : false,
-        extrudePath     : extusionSpline
-    };
-    var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
+    //    var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
+    //    extusionSpline.closed = true;
+    //     var extrudeSettings = {
+    //     steps           : 30, //int. number of points used for subdividing segements of extrude spline //10
+    //     bevelEnabled    : false,
+    //     extrudePath     : extusionSpline
+    // };
+    // var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
 
-        var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
+    //     var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
 
-        scene.add( mesh );
+    //     scene.add( mesh );
+    ///----------
 
         ////render the ellipse in single lines
+        /*
        // console.log(c)
        // scene.add( new THREE.Line(oneEllipse, 
        //                  new THREE.LineBasicMaterial({
@@ -116,7 +164,9 @@ function init() {
        //                      linewidth: 1
        //                  }))
        //  );
-    }
+       */
+    // }
+
     //render spiral spine
     // var spineLine = new THREE.Line( geometrySpiral, material );
     // scene.add( spineLine );
@@ -129,6 +179,7 @@ function init() {
     light.position.set(-1, 1.5, 0.5);
     scene.add(light);
 
+
     // events
 
     window.addEventListener('deviceorientation', setOrientationControls, true);
@@ -137,9 +188,9 @@ function init() {
     exportButton = document.getElementById( 'export' );
     exportButton.addEventListener( 'click', function() { exportToObj(); });
 
-     floatingDiv = document.createElement( 'div' );
-                floatingDiv.className = 'floating';
-                document.body.appendChild( floatingDiv );
+     // floatingDiv = document.createElement( 'div' );
+     //            floatingDiv.className = 'floating';
+     //            document.body.appendChild( floatingDiv );
 
 }
 

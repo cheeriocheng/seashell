@@ -2,7 +2,30 @@ class Seashell {
 
 
     constructor(A){
+      //default: boat ear mooon 
         this.A =  undefined !== A ? A : 0.25 ; //0.1
+        this.turns = 6; // how many turns in the shell
+        this.deltaTheta = degToRad(15) ; //degrees per new session
+
+        this.D = 1 ; 
+        this.steps = 0; //how many ellipses C to draw; to be calculated
+        this.cSteps = 30; //how many straight lines makes an ellipse C
+        this.alpha= degToRad(83); 
+        this.beta=degToRad(42); 
+        this.phi=degToRad(70); 
+        this.mu=degToRad(10); 
+        this.omega=degToRad(30); 
+        
+        this.a=0.12; //1.2; 
+        this.b=.2 ; // 2.0; 
+        this.L=0; 
+        this.P=0; 
+        this.W1=0; 
+        this.W2=0; 
+        this.N=0;
+
+        /* works for tube export
+         this.A =  undefined !== A ? A : 0.25 ; //0.1
         this.turns = 5; // how many turns in the shell
         this.deltaTheta = degToRad(18) ; //degrees per new session
 
@@ -22,9 +45,11 @@ class Seashell {
         this.W1=0; 
         this.W2=0; 
         this.N=0;
+        */
 
 
        // this.loadHorseConch() ; 
+       // this.loadWentletrap() ; 
 
         this._spiral = null;
         this._shell = null; 
@@ -62,10 +87,15 @@ class Seashell {
             // Generate ellipse around each point of spiral
             shellEllipseArray[i] = [];
 
+            //cx
+            this.cSteps = 0.2* this.steps;
+
+            var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
+
             for (var j = 0; j < this.cSteps ; j++) 
             {
               var s = j * Math.PI * 2 /this.cSteps;  //angular step around the ellipse 
-              var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
+              // var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
               
               // add surface manipulations
               var surfrad = 0;
@@ -127,6 +157,29 @@ class Seashell {
         this.N=8;
 
     }
+    loadWentletrap(){
+      this.turns = 6; // how many turns in the shell
+      this.deltaTheta = degToRad(30) ; //degrees per new session
+
+      this.D = 1 ; 
+      this.steps = 0; //how many ellipses C to draw; to be calculated
+      this.cSteps = 36; //how many straight lines makes an ellipse C
+      this.alpha= degToRad(86); 
+      this.beta=degToRad(10); 
+      this.phi=degToRad(-45); 
+      this.mu=degToRad(5 ); 
+      this.omega=degToRad(1); 
+      
+      this.A =  0.9;
+      this.a=0.2;
+      this.b=.2 ; 
+      this.L=0.14; 
+      this.P=40; 
+      this.W1=180; 
+      this.W2=0.4; 
+      this.N=180;
+    }
+
 
 }
 
