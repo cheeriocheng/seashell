@@ -77,22 +77,22 @@ function init() {
     // var material = new THREE.LineBasicMaterial({
     //     color: 0xeeeeee
     // });
-    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.SmoothShading}); //FlatShading:SmoothShading
+    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.FlatShading}); //FlatShading:SmoothShading
 
      //DRAW IN DOTS 
     var sphere; 
     var pos; 
     var radius = 0.5; //— sphere radius. Default is 50.
-    var widthSegments = 5; //— number of horizontal segments
-    var heightSegments = 5; 
+    var widthSegments = 10; //— number of horizontal segments
+    var heightSegments = 10; 
 
-    for (var i = 0 ; i< ss.spiral.length; i++){
+    for (var i = 40 ; i< ss.spiral.length; i++){
         for (var j = 0 ; j < ss._shell[i].length; j++){
            // oneEllipse= new THREE.Geometry(); 
            // oneEllipse.vertices.push(ss._shell[i][j]);  
 
           
-           if(j%8 == 4){
+           if(j> 12 && j% 8 == 4){
             radius = 1 ;//0.3;
            }else{
             radius = 0.5; //0.5 //0.1 = one drop 

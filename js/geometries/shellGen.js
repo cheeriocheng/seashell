@@ -4,12 +4,12 @@ class Seashell {
     constructor(A){
       //default: boat ear mooon 
         this.A =  undefined !== A ? A : 0.25 ; //0.1
-        this.turns = 6; // how many turns in the shell
+        this.turns =  6;  //6; // how many turns in the shell
         this.deltaTheta = degToRad(15) ; //degrees per new session
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
-        this.cSteps = 30; //how many straight lines makes an ellipse C
+        this.cSteps = 30; //how many straight lines makes an ellipse C  //30
         this.alpha= degToRad(83); 
         this.beta=degToRad(42); 
         this.phi=degToRad(70); 
@@ -69,7 +69,7 @@ class Seashell {
         var spiralPointArray = [];
         var shellEllipseArray = [];
         this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
-         console.log (this.steps); 
+         // console.log (this.steps); 
 
      
         for ( var i = 0; i < this.steps; i ++ ) {
@@ -94,8 +94,8 @@ class Seashell {
             // this.cSteps = 0.2* this.steps;
             
             var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
-          
-           // console.log ( tempCsteps); 
+            
+        //    console.log ( tempCsteps, this.steps); 
             // for (var j = 0; j < this.cSteps ; j++) 
             for (var j = 0; j < tempCsteps ; j++) 
             {
