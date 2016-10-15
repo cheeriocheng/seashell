@@ -69,7 +69,7 @@ class Seashell {
         var spiralPointArray = [];
         var shellEllipseArray = [];
         this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
-        // console.log (this.steps); 
+         console.log (this.steps); 
 
      
         for ( var i = 0; i < this.steps; i ++ ) {
@@ -87,24 +87,31 @@ class Seashell {
             // Generate ellipse around each point of spiral
             shellEllipseArray[i] = [];
 
-            //cx
-            this.cSteps = 0.2* this.steps;
 
             var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
 
-            for (var j = 0; j < this.cSteps ; j++) 
+            //cx
+            // this.cSteps = 0.2* this.steps;
+            
+            var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
+          
+           // console.log ( tempCsteps); 
+            // for (var j = 0; j < this.cSteps ; j++) 
+            for (var j = 0; j < tempCsteps ; j++) 
             {
-              var s = j * Math.PI * 2 /this.cSteps;  //angular step around the ellipse 
+              
+              var s = j * Math.PI * 2 / tempCsteps;  //angular step around the ellipse 
+               // console.log (s); 
               // var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
               
               // add surface manipulations
-              var surfrad = 0;
+            //  var surfrad = 0;
               // if (this.W1==0 || this.W2==0 || this.N==0) surfrad = 0;
               // else {
               //   float lt = (Math.PI * 2 / this.N) * ( this.N*this.theta / Math.PI / 2 - int(this.N* theta / Math.PI / 2) );
               //   surfrad = L * exp( -( pow(2*(s-P)/W1, 2) + pow(2*lt/W2, 2) ) );          
               // }
-              r2 += surfrad;
+            //  r2 += surfrad;
             
 
               var ellipseX = x + Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
@@ -158,7 +165,7 @@ class Seashell {
 
     }
     loadWentletrap(){
-      this.turns = 6; // how many turns in the shell
+      this.turns = 10; // how many turns in the shell
       this.deltaTheta = degToRad(30) ; //degrees per new session
 
       this.D = 1 ; 

@@ -3,10 +3,10 @@ var user = false;
 var camera, scene, renderer;
 var effect;
 var mobile = false;
-var globe
-var group
+var globe;
+var group;
 
-var ss 
+var ss ;//seashell instance
 
 var exportButton//, floatingDiv;
 
@@ -74,25 +74,28 @@ function init() {
     //spine of seashell 
     // var spiral = ss.spiral; 
     
-    var material = new THREE.LineBasicMaterial({
-        color: 0xeeeeee
-    });
-    //DRAW IN DOTS 
+    // var material = new THREE.LineBasicMaterial({
+    //     color: 0xeeeeee
+    // });
+    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.SmoothShading}); //FlatShading:SmoothShading
+
+     //DRAW IN DOTS 
     var sphere; 
     var pos; 
-    var radius =0.2; //— sphere radius. Default is 50.
+    var radius = 0.5; //— sphere radius. Default is 50.
     var widthSegments = 5; //— number of horizontal segments
     var heightSegments = 5; 
-    for (var i = 60 ; i< ss.spiral.length; i++){
+
+    for (var i = 0 ; i< ss.spiral.length; i++){
         for (var j = 0 ; j < ss._shell[i].length; j++){
            // oneEllipse= new THREE.Geometry(); 
            // oneEllipse.vertices.push(ss._shell[i][j]);  
 
-           //TODO SCALE UP 
-           if(j%8 ==0){
-            radius = 0.3 ;//1;
+          
+           if(j%8 == 4){
+            radius = 1 ;//0.3;
            }else{
-            radius = 0.1; //0.5 //0.1 = one drop 
+            radius = 0.5; //0.5 //0.1 = one drop 
            }
            sphere = new THREE.Mesh( new THREE.SphereGeometry( radius, widthSegments, heightSegments ), material );
            pos = ss._shell[i][j]; 
@@ -178,7 +181,9 @@ function init() {
     var light = new THREE.DirectionalLight(0xffffff);
     light.position.set(-1, 1.5, 0.5);
     scene.add(light);
-
+    
+    var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+    scene.add( ambientLight );
 
     // events
 
