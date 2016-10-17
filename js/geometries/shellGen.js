@@ -6,6 +6,7 @@ class Seashell {
         this.A =  undefined !== A ? A : 0.25 ; //0.1
         this.turns =  5;  //6; // how many turns in the shell
         this.deltaTheta = degToRad(15) ; //degrees per new session
+        this.startingStep = 30;
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
@@ -50,6 +51,7 @@ class Seashell {
 
        // this.loadHorseConch() ; 
        // this.loadWentletrap() ; 
+       // this.loadTurritella();
 
         this._spiral = null;
         this._shell = null; 
@@ -70,8 +72,7 @@ class Seashell {
         var shellEllipseArray = [];
         this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
          // console.log (this.steps); 
-
-     
+         
         for ( var i = 0; i < this.steps; i ++ ) {
             
             var theta =  i * this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
@@ -88,19 +89,20 @@ class Seashell {
             shellEllipseArray[i] = [];
 
 
-            var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
+            var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius in ellipse at this given angle 
 
             //cx
             // this.cSteps = 0.2* this.steps;
             
-            var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
+        //    var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
             
         //    console.log ( tempCsteps, this.steps); 
             // for (var j = 0; j < this.cSteps ; j++) 
-            for (var j = 0; j < tempCsteps ; j++) 
+            for (var j = 0; j < this.cSteps ; j++) 
             {
-              
-              var s = j * Math.PI * 2 / tempCsteps;  //angular step around the ellipse 
+             
+
+              var s = j * Math.PI * 2 / this.cSteps;  //angular step around the ellipse 
                // console.log (s); 
               // var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
               
@@ -125,9 +127,28 @@ class Seashell {
               // y += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2 ;
               ellipseY += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad;
               
+
+
               shellEllipseArray[i].push(new THREE.Vector3(ellipseX,ellipseY,ellipseZ));
+
+                 // //xc-
+   
+              // shellEllipseArray[i].push(new THREE.Vector3( 
+              //   Math.cos(j)*this.a,
+              //   Math.sin(j)*this.b,
+              //   0));
+
+
+              // //-xc
               
-            }
+
+              
+            }//end of making ellispe 
+           
+
+          
+            
+
          }
 
         // Return complete curve.
@@ -164,9 +185,33 @@ class Seashell {
         this.N=8;
 
     }
+
+    loadTurritella(){
+       this.turns = 1.5; // how many turns in the shell
+        this.deltaTheta = degToRad(30) ; //degrees per new session
+        this.startingStep = 0;
+
+
+      this.D=1; 
+      this.alpha=degToRad(88.9); 
+      this.beta=degToRad(4); 
+      this.phi=degToRad(55); 
+      this.mu=degToRad(1); 
+      this.omega=degToRad(-2); 
+      this.A= 22;//22.2; 
+      this.a=1.3; 
+      this.b=1.5; 
+      this.L=0; 
+      this.P=0; 
+      this.W1=0; 
+      this.W2=0; 
+      this.N=0;
+  
+    }
     loadWentletrap(){
       this.turns = 10; // how many turns in the shell
       this.deltaTheta = degToRad(30) ; //degrees per new session
+      this.startingStep = 30;
 
       this.D = 1 ; 
       this.steps = 0; //how many ellipses C to draw; to be calculated

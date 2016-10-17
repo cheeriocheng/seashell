@@ -55,7 +55,7 @@ function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 8);
+    camera.position.set(0, 0, 6); //008
     camera.focalLength = camera.position.distanceTo(scene.position);
     camera.lookAt(scene.position);
 
@@ -65,14 +65,14 @@ function init() {
 
     //coordinate sys
     // X axis is red. The Y axis is green. The Z axis is blue.
-    // object = new THREE.AxisHelper( 1 );             
-    // scene.add( object );
+    object = new THREE.AxisHelper( 1 );             
+    scene.add( object );
     
   
     
     ss = new Seashell();
     //spine of seashell 
-    // var spiral = ss.spiral; 
+    var spiral = ss.spiral; 
     
    
 
@@ -119,7 +119,7 @@ function init() {
 
     var extrudeShapePoints = [], count = 10;
     for ( var i = 0; i < count; i ++ ) {
-        var l = 0.5;
+        var l = .15; //radius of shape
         var a = 2 * i / count * Math.PI;
         extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
     }
@@ -130,22 +130,21 @@ function init() {
 
 
     //for each point on the spiral 
-    for (var i = 0 ; i< ss.spiral.length; i++){
-        geometrySpiral.vertices.push(ss.spiral[i]);  
+    for (var i = ss.startingStep ; i< ss.spiral.length; i++){
+
+      // console.log("point", i, "/" , ss.spiral.length, "in spiral.");
+      geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 
        
-     //  var c = 0x011000 + 0x0000e0* i ;
-
-
-
+ 
        for (var j = 0 ; j < ss._shell[i].length; j++){
            // oneEllipse= new THREE.Geometry(); 
            oneEllipse.vertices.push(ss._shell[i][j]);  
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-       //cx
+      
 
        var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
        extusionSpline.closed = true;
@@ -158,12 +157,14 @@ function init() {
 
     var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
 
+    var T = new THREE.Matrix4(); 
+     T.makeTranslation(0, 0, 10); //move to where the point on ellipse is 
+     // mesh.translateZ(10);
+     mesh.geometry.applyMatrix(T)
     scene.add( mesh );
     ///----------
 
-        ////render the ellipse in single lines
-        
-       // console.log(c)
+        ////render the ellipse in single lines   
        // scene.add( new THREE.Line(oneEllipse, 
        //                  new THREE.LineBasicMaterial({
        //                      color: 0xffff00,
@@ -174,11 +175,11 @@ function init() {
     }
 
     //render spiral spine
-    // var lineMaterial = new THREE.LineBasicMaterial({
-    //     color: 0xeeeeee
-    // });
-    // var spineLine = new THREE.Line( geometrySpiral, lineMaterial );
-    // scene.add( spineLine );
+    var lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xeeeeee
+    });
+    var spineLine = new THREE.Line( geometrySpiral, lineMaterial );
+    scene.add( spineLine );
 
 
 
