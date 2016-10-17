@@ -5,7 +5,7 @@ class Seashell {
       //default: boat ear mooon 
         this.A =  undefined !== A ? A : 0.25 ; //0.1
         this.turns =  5;  //6; // how many turns in the shell
-        this.deltaTheta = degToRad(15) ; //degrees per new session
+        this.deltaTheta = degToRad(30) ; //degrees per new session
         this.startingStep = 30;
 
         this.D = 1 ; 
@@ -52,9 +52,10 @@ class Seashell {
        // this.loadHorseConch() ; 
        // this.loadWentletrap() ; 
        // this.loadTurritella();
+       this.loadTest();
 
-        this._spiral = null;
-        this._shell = null; 
+        this._spiral = null; //centeral spiral 
+        this._shell = null;  //array of ellipse 
     }
 
 
@@ -160,7 +161,33 @@ class Seashell {
 
     }
 
+    loadTest(){
+        
+      //default: boat ear mooon 
+        this.A = 0.3 ; //0.25 ; //0.1
+        this.turns =  3;  //6; // how many turns in the shell
+        this.deltaTheta = degToRad(0.05) ; //degrees per new session
+        this.startingStep = 0;
 
+        this.D = 1 ; 
+        this.steps = 0; //how many ellipses C to draw; to be calculated
+        this.cSteps = 400; //how many straight lines makes an ellipse C  //30
+        this.alpha= degToRad(83); 
+        this.beta=degToRad(42); 
+        this.phi=degToRad(70); 
+        this.mu=degToRad(10); 
+        this.omega=degToRad(30); 
+        
+        this.a=0.12; //1.2; 
+        this.b=.2 ; // 2.0; 
+        this.L=0; 
+        this.P=0; 
+        this.W1=0; 
+        this.W2=0; 
+        this.N=0;
+
+
+    }
     loadHorseConch(){
         
         this.turns = 6; // how many turns in the shell
