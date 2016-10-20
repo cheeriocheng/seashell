@@ -4,8 +4,8 @@ class Seashell {
     constructor(A){
       //default: boat ear mooon 
         this.A =  undefined !== A ? A : 0.25 ; //0.1
-        this.turns =  5;  //6; // how many turns in the shell
-        this.deltaTheta = degToRad(15) ; //degrees per new session
+        this.turns =  5.5;  //6; // how many turns in the shell
+        this.deltaTheta = degToRad(20) ; //degrees per new session
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
@@ -24,32 +24,10 @@ class Seashell {
         this.W2=0; 
         this.N=0;
 
-        /* works for tube export
-         this.A =  undefined !== A ? A : 0.25 ; //0.1
-        this.turns = 5; // how many turns in the shell
-        this.deltaTheta = degToRad(18) ; //degrees per new session
-
-        this.D = 1 ; 
-        this.steps = 0; //how many ellipses C to draw; to be calculated
-        this.cSteps = 10; //how many straight lines makes an ellipse C
-        this.alpha= degToRad(83); 
-        this.beta=degToRad(42); 
-        this.phi=degToRad(70); 
-        this.mu=degToRad(10); 
-        this.omega=degToRad(30); 
-        
-        this.a=0.12; //1.2; 
-        this.b=.2 ; // 2.0; 
-        this.L=0; 
-        this.P=0; 
-        this.W1=0; 
-        this.W2=0; 
-        this.N=0;
-        */
-
 
        // this.loadHorseConch() ; 
-       // this.loadWentletrap() ; 
+       this.loadWentletrap() ; 
+       // this.loadNeptune();
 
         this._spiral = null;
         this._shell = null; 
@@ -69,11 +47,15 @@ class Seashell {
         var spiralPointArray = [];
         var shellEllipseArray = [];
         this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
-         // console.log (this.steps); 
+        console.log ("total loops:" , this.steps); 
 
      
         for ( var i = 0; i < this.steps; i ++ ) {
-            
+            //try to reduce the number of circles when i is small  ..
+            // if (i<50 && i%2 == 0){
+            //   continue;
+            // }
+
             var theta =  i * this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
             var rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );
 
@@ -165,19 +147,20 @@ class Seashell {
 
     }
     loadWentletrap(){
-      this.turns = 10; // how many turns in the shell
+      this.turns = 8; // how many turns in the shell
       this.deltaTheta = degToRad(30) ; //degrees per new session
-
-      this.D = 1 ; 
+      this.startingStep = 65;
+   
       this.steps = 0; //how many ellipses C to draw; to be calculated
       this.cSteps = 36; //how many straight lines makes an ellipse C
+      this.D = 1 ; 
       this.alpha= degToRad(86); 
       this.beta=degToRad(10); 
       this.phi=degToRad(-45); 
       this.mu=degToRad(5 ); 
       this.omega=degToRad(1); 
       
-      this.A =  0.9;
+      this.A =  0.9; //0.9;
       this.a=0.2;
       this.b=.2 ; 
       this.L=0.14; 
@@ -187,6 +170,27 @@ class Seashell {
       this.N=180;
     }
 
+    
+
+    loadNeptune(){
+      this.turns = 1; // how many turns in the shell
+      this.deltaTheta = degToRad(15) ; //degrees per new session
+      this.steps = 0; //how many ellipses C to draw; to be calculated
+      this.cSteps = 36; //how many straight lines makes an ellipse C
+
+      this.D=1; 
+      this.alpha=degToRad(87); 
+      this.beta=degToRad(4); 
+      this.phi=degToRad(-36); 
+      this.mu=degToRad(1); 
+      this.omega=degToRad(-2); 
+
+      this.A=46; 
+      this.a=6; 
+      this.b=26; 
+      this.L=0; 
+      this.P=0; this.W1=0; this.W2=0; this.N=0;
+    }
 
 }
 

@@ -117,12 +117,38 @@ function init() {
     var geometrySpiral = new THREE.Geometry();
   
 
-    var extrudeShapePoints = [], count = 10;
+    var extrudeShapePoints = [], count = 20; // how many point describes this circular extruder shape
+    ////for circular 
+    // for ( var i = 0; i < count; i ++ ) {
+    //     var l = 0.4; //radius
+    //     var a = 2 * i / count * Math.PI;
+    //     extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+    // }
+
+    // //for elLipse 
     for ( var i = 0; i < count; i ++ ) {
-        var l = 0.5;
-        var a = 2 * i / count * Math.PI;
-        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+        var a = 0.5; //radius
+        var b = 1; 
+        var t = 2 * i / count * Math.PI;
+        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( t ) * a, Math.sin( t ) * b ) );
     }
+
+    // // for semi ellipse    
+    // for ( var i = 0; i < count; i ++ ) {
+    //     var a = 0.375; //radius
+    //     var b = 1; 
+    //     var t = 2  * Math.PI -  i / count * Math.PI;
+    //     extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( t ) * a, Math.sin( t ) * b ) );
+    // }
+
+        // // for triangle
+        // var a = 1
+        // var b = 1.732; 
+        // extrudeShapePoints.push( new THREE.Vector2 ( a,0 ));
+        // extrudeShapePoints.push( new THREE.Vector2 ( 0,b ));
+        // extrudeShapePoints.push( new THREE.Vector2 ( -a,0 ));
+ 
+
 
     var extrudeShape = new THREE.Shape( extrudeShapePoints );
 
@@ -130,7 +156,8 @@ function init() {
 
 
     //for each point on the spiral 
-    for (var i = 0 ; i< ss.spiral.length; i++){
+    //start at 30 for default 
+    for (var i = ss.startingStep ; i< ss.spiral.length; i++){
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 
