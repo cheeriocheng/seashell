@@ -55,7 +55,7 @@ function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 8);
+    camera.position.set(0, 0, 25);
     camera.focalLength = camera.position.distanceTo(scene.position);
     camera.lookAt(scene.position);
 
@@ -119,9 +119,10 @@ function init() {
 
     var extrudeShapePoints = [], count = 10;
     for ( var i = 0; i < count; i ++ ) {
-        var l = 0.5;
-        var a = 2 * i / count * Math.PI;
-        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+        var a = 4; 
+        var b = 1;
+        var t = 2 * i / count * Math.PI;
+        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( t ) * b, Math.sin( t ) * a) );
     }
 
     var extrudeShape = new THREE.Shape( extrudeShapePoints );
@@ -130,7 +131,8 @@ function init() {
 
 
     //for each point on the spiral 
-    for (var i = 0 ; i< ss.spiral.length; i++){
+    var l = ss.spiral.length ; 
+    for (var i = l- 30 ; i<l; i++){
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 

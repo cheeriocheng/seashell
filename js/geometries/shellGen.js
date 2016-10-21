@@ -47,7 +47,7 @@ class Seashell {
         this.N=0;
         */
 
-
+       this.loadZcorp() ;
        // this.loadHorseConch() ; 
        // this.loadWentletrap() ; 
 
@@ -63,6 +63,29 @@ class Seashell {
             this.calcSpiral();
         }
         return this._spiral;
+    }
+
+    loadZcorp(){
+        this.A =   0.25 ; //0.1
+        this.turns = 6.4; // how many turns in the shell
+        this.deltaTheta = degToRad(18) ; //degrees per new session //18 23
+
+        this.D = 1 ; 
+        this.steps = 0; //how many ellipses C to draw; to be calculated
+        this.cSteps = 10; //how many straight lines makes an ellipse C
+        this.alpha= degToRad(83);  //83
+        this.beta=degToRad(90);  //how steep the cone of spiral is 
+        this.phi=degToRad(70); 
+        this.mu=degToRad(10); 
+        this.omega=degToRad(30); 
+        
+        this.a=0.12; //1.2; 
+        this.b=.2 ; // 2.0; 
+        this.L=0; 
+        this.P=0; 
+        this.W1=0; 
+        this.W2=0; 
+        this.N=0;
     }
 
     calcSpiral(){
