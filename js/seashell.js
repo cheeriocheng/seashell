@@ -133,6 +133,7 @@ function init() {
     //for each point on the spiral 
     var l = ss.spiral.length ; 
     for (var i = l- 30 ; i<l; i++){
+
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
        var oneEllipse = new THREE.Geometry(); 
@@ -159,7 +160,9 @@ function init() {
     var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
 
     var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
-
+    var scale = i/l; 
+    console.log(scale);
+    mesh.scale.set (scale,scale,scale);
     scene.add( mesh );
     ///----------
 
