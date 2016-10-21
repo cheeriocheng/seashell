@@ -117,12 +117,25 @@ function init() {
     var geometrySpiral = new THREE.Geometry();
   
 
-    var extrudeShapePoints = [], count = 10;
+    var extrudeShapePoints = [], count = 50;
+    var a = 4.3; 
+    var b = 1;
+    var t =0;
+
+    var c = 0.2 ;  
+    var tempX;
+    var tempY;
+
     for ( var i = 0; i < count; i ++ ) {
-        var a = 4; 
-        var b = 1;
-        var t = 2 * i / count * Math.PI;
-        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( t ) * b, Math.sin( t ) * a) );
+        
+        t = 2 * i / count * Math.PI;
+        tempX = Math.cos( t ) * b; 
+        tempY = Math.sin( t ) * a; 
+
+        tempX += -c*Math.cos(t*2) ;
+        tempY += c*Math.sin(t*2) ;
+ 
+        extrudeShapePoints.push( new THREE.Vector2 ( tempX, tempY));
     }
 
     var extrudeShape = new THREE.Shape( extrudeShapePoints );
@@ -161,7 +174,7 @@ function init() {
 
     var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
     var scale = i/l; 
-    console.log(scale);
+    // console.log(scale);
     mesh.scale.set (scale,scale,scale);
     scene.add( mesh );
     ///----------

@@ -79,13 +79,13 @@ class Seashell {
         this.mu=degToRad(10); 
         this.omega=degToRad(30); 
         
-        this.a=0.12; //1.2; 
-        this.b=.2 ; // 2.0; 
-        this.L=0; 
-        this.P=0; 
-        this.W1=0; 
-        this.W2=0; 
-        this.N=0;
+        // this.a=0.12; //1.2; 
+        // this.b=.2 ; // 2.0; 
+        // this.L=1.4; 
+        // this.P=4; 
+        // this.W1=18; 
+        // this.W2=0.4; 
+        // this.N=18;
     }
 
     calcSpiral(){
@@ -124,17 +124,17 @@ class Seashell {
             {
               
               var s = j * Math.PI * 2 / tempCsteps;  //angular step around the ellipse 
-               // console.log (s); 
-              // var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
+             //   console.log (s); 
+             //  var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
               
-              // add surface manipulations
-            //  var surfrad = 0;
-              // if (this.W1==0 || this.W2==0 || this.N==0) surfrad = 0;
-              // else {
-              //   float lt = (Math.PI * 2 / this.N) * ( this.N*this.theta / Math.PI / 2 - int(this.N* theta / Math.PI / 2) );
-              //   surfrad = L * exp( -( pow(2*(s-P)/W1, 2) + pow(2*lt/W2, 2) ) );          
-              // }
-            //  r2 += surfrad;
+             //  // add surface manipulations
+             // var surfrad = 0;
+             //  if (this.W1==0 || this.W2==0 || this.N==0) surfrad = 0;
+             //  else {
+             //    var lt = (Math.PI * 2 / this.N) * ( this.N*this.theta / Math.PI / 2 - Math.round(this.N* theta / Math.PI / 2) );
+             //    surfrad = this.L * Math.exp( -( Math.pow(2*(s-this.P)/this.W1, 2) + Math.pow(2*lt/this.W2, 2) ) );          
+             //  }
+             // r2 += surfrad;
             
 
               var ellipseX = x + Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
