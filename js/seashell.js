@@ -122,7 +122,8 @@ function init() {
     var b = 1;
     var t =0;
 
-    var c = 0.2 ;  
+    var c = 0.3 ; //0.2 
+    var k = 2 ; //5
     var tempX;
     var tempY;
 
@@ -132,8 +133,8 @@ function init() {
         tempX = Math.cos( t ) * b; 
         tempY = Math.sin( t ) * a; 
 
-        tempX += -c*Math.cos(t*2) ;
-        tempY += c*Math.sin(t*2) ;
+        tempX += -c*Math.cos(t*k) ;
+        tempY += c*Math.sin(t*k) ;
  
         extrudeShapePoints.push( new THREE.Vector2 ( tempX, tempY));
     }

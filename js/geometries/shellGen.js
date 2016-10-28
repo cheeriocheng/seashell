@@ -72,9 +72,9 @@ class Seashell {
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
-        this.cSteps = 10; //how many straight lines makes an ellipse C
+        this.cSteps = 12; //12, 10 how many straight lines makes an ellipse C
         this.alpha= degToRad(83);  //83
-        this.beta=degToRad(90);  //how steep the cone of spiral is 
+        this.beta=degToRad(80);  //how steep the cone of spiral is 
         this.phi=degToRad(70); 
         this.mu=degToRad(10); 
         this.omega=degToRad(30); 
@@ -116,14 +116,16 @@ class Seashell {
             //cx
             // this.cSteps = 0.2* this.steps;
             
-            var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
+            // var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
             
         //    console.log ( tempCsteps, this.steps); 
-            // for (var j = 0; j < this.cSteps ; j++) 
-            for (var j = 0; j < tempCsteps ; j++) 
+            for (var j = 0; j < this.cSteps ; j++) 
+            // for (var j = 0; j < tempCsteps ; j++) 
             {
               
-              var s = j * Math.PI * 2 / tempCsteps;  //angular step around the ellipse 
+              // var s = j * Math.PI * 2 / tempCsteps; 
+              var s= j * Math.PI * 2.0 / this.cSteps;  //angular step around the ellipse 
+
              //   console.log (s); 
              //  var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
               
