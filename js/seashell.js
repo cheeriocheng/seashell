@@ -145,7 +145,7 @@ function init() {
 
     //for each point on the spiral 
     var l = ss.spiral.length ; 
-    for (var i = l- 30 ; i<l; i++){
+    for (var i = l- 36 ; i<l; i++){
 
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
@@ -166,7 +166,7 @@ function init() {
        var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
        extusionSpline.closed = true;
         var extrudeSettings = {
-        steps           : 30, //int. number of points used for subdividing segements of extrude spline //10
+        steps           : 60, //int. number of points used for subdividing segements of extrude spline //10
         bevelEnabled    : false,
         extrudePath     : extusionSpline
     };
