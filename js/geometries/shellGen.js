@@ -4,7 +4,7 @@ class Seashell {
     constructor(A){
       //default: boat ear mooon 
         this.A =  undefined !== A ? A : 0.25 ; //0.1
-        this.turns =  5.5;  //6; // how many turns in the shell
+        this.turns =  5;  //6; // how many turns in the shell
         this.deltaTheta = degToRad(20) ; //degrees per new session
 
         this.D = 1 ; 

@@ -127,7 +127,7 @@ function init() {
 
     // //for elLipse 
     for ( var i = 0; i < count; i ++ ) {
-        var a = 0.5; //radius
+        var a = 0.3; //radius
         var b = 1; 
         var t = 2 * i / count * Math.PI;
         extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( t ) * a, Math.sin( t ) * b ) );
