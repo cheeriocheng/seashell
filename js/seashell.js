@@ -8,39 +8,11 @@ var group;
 
 var ss ;//seashell instance
 
-var exportButton//, floatingDiv;
+
 
 
 init();
 animate();
-
-function exportToObj() {
-
-    var exporter = new THREE.OBJExporter();
-    var result = exporter.parse( scene );
-    // floatingDiv.style.display = 'block';
-    // floatingDiv.innerHTML = result.split( '\n' ).join ( '<br />' );
-    exportToFile("seashell.obj",result );
-
-}
-
-
-//reza
-function exportToFile( filename, data ) {
-  var pom = document.createElement( 'a' );
-  pom.href = URL.createObjectURL( new Blob( [ data ], { type : 'text/plain'} ) );
-  pom.download = filename;
-  document.body.appendChild( pom );
-
-  if( document.createEvent ) {
-    var event = document.createEvent( 'MouseEvents' );
-    event.initEvent( 'click', true, true );
-    pom.dispatchEvent( event );
-  }
-  else {
-    pom.click();
-  }
-};
 
 
 function init() {
@@ -59,7 +31,8 @@ function init() {
     camera.focalLength = camera.position.distanceTo(scene.position);
     camera.lookAt(scene.position);
 
-    controls = new THREE.OrbitControls(camera);
+    // controls = new THREE.OrbitControls(camera);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.autoRotate = false; //true;
     controls.enablePan = false;
 
@@ -216,9 +189,6 @@ function init() {
 
     window.addEventListener('deviceorientation', setOrientationControls, true);
     window.addEventListener('resize', onWindowResize, false);
-
-    exportButton = document.getElementById( 'export' );
-    exportButton.addEventListener( 'click', function() { exportToObj(); });
 
      // floatingDiv = document.createElement( 'div' );
      //            floatingDiv.className = 'floating';
