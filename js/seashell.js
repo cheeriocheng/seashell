@@ -122,8 +122,8 @@ function init() {
     var b = 1;
     var t =0;
 
-    var c = 0.3 ; //0.2 
-    var k = 2 ; //5
+    var c = 0.2 ; //0.2 
+    var k = 5 ; //5
     var tempX;
     var tempY;
 
@@ -145,8 +145,9 @@ function init() {
 
 
     //for each point on the spiral 
-    var l = ss.spiral.length ; 
-    for (var i = l- 36 ; i<l; i++){
+    // starting with -36
+    var l = ss.spiral.length ;  
+    for (var i = l- 32 ; i<l; i++){
 
         geometrySpiral.vertices.push(ss.spiral[i]);  
 
@@ -162,6 +163,7 @@ function init() {
 
        }
        oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
+        // oneEllipse.vertices.push(ss._shell[i][1]);  //completes full loop
        //cx
 
        var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );

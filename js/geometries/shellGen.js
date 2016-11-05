@@ -69,15 +69,16 @@ class Seashell {
         this.A =   0.25 ; //0.1
         this.turns = 6.4; // how many turns in the shell
         this.deltaTheta = degToRad(18) ; //degrees per new session //18 23
+    
 
         this.D = 1 ; 
         this.steps = 0; //how many ellipses C to draw; to be calculated
-        this.cSteps = 12; //12, 10 how many straight lines makes an ellipse C
+        this.cSteps = 14; //12, 10 how many straight lines makes an ellipse C
         this.alpha= degToRad(83);  //83
         this.beta=degToRad(80);  //how steep the cone of spiral is 
         this.phi=degToRad(70); 
-        this.mu=degToRad(10); 
-        this.omega=degToRad(30); 
+        this.mu=degToRad(30);  //10 how twisty the spiral is 
+        this.omega=degToRad(30);  
         
         // this.a=0.12; //1.2; 
         // this.b=.2 ; // 2.0; 
