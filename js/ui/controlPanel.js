@@ -1,19 +1,29 @@
-var exportButton//, floatingDiv;
+
+//add control panel 
+var controlDiv = document.createElement("div"); 
+controlDiv.setAttribute("id",'controlPanel')
+// var newContent = document.createTextNode("Hi there and greetings!"); 
+//   newDiv.appendChild(newContent); //add the text node to the newly created div.
+document.body.appendChild(controlDiv); 
 
 
-var newDiv = document.createElement("div"); 
-newDiv.setAttribute("id",'controlPanel')
-var newContent = document.createTextNode("Hi there and greetings!"); 
-  newDiv.appendChild(newContent); //add the text node to the newly created div. 
+//add export button 
+// 1. Create the button
+var button = document.createElement("button");
+button.innerHTML = "export obj";
 
-document.body.appendChild(newDiv); 
+// 2. Append somewhere
+controlDiv.appendChild(button);
 
+// 3. Add event handler
+button.addEventListener ("click", function() {
+  exportToObj();
+});
 
-    exportButton = document.getElementById( 'export' );
-    exportButton.addEventListener( 'click', function() { exportToObj(); });
+/* Read 
 
-
-
+https://css-tricks.com/use-button-element/
+*/
 
 function exportToObj() {
 
