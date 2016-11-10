@@ -70,6 +70,10 @@ function addFormParam(frm, d, vl, mn, mx, stp) {
   frm.appendChild( slider );
 
   frm.appendChild( document.createElement("br") );
+
+  slider.addEventListener("change", function(){
+    console.log(document.getElementById(d).value);
+  });
 }
 
 
