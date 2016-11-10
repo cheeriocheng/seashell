@@ -3,8 +3,7 @@
 class Seashell {
 
 
-  constructor( scene ){
-    this._scene = scene
+  constructor(){
     //default: boat ear mooon 
     this.A = 0.25 ; //0.1
     this.turns =  5;  //6; // how many turns in the shell
@@ -82,19 +81,19 @@ class Seashell {
       // this.N=18;
   }
 
-  updateParams(A, turns, deltaTheta, D, steps, cSteps, alpha, beta, phi, mu, omega)
+  updateParams( p )
   {
-    this.A = A;
-    this.turns = turns;
-    this.deltaTheta = degToRad(deltaTheta);
-    this.D = D;
-    this.steps = steps;
-    this.cSteps = cSteps;
-    this.alpha = degToRad(alpha);
-    this.beta = degToRad(beta);
-    this.phi = degToRad(phi);
-    this.mu = degToRad(mu);
-    this.omega = degToRad(omega);
+    this.A = p["A"];
+    this.turns = p["turns"];
+    this.deltaTheta = degToRad(p["deltaTheta"]);
+    this.D = p["D"];
+    this.steps = p["steps"];
+    this.cSteps = p["cSteps"];
+    this.alpha = degToRad(p["alpha"]);
+    this.beta = degToRad(p["beta"]);
+    this.phi = degToRad(p["phi"]);
+    this.mu = degToRad(p["mu"]);
+    this.omega = degToRad(p["omega"]);
   }
 
   calcSpiral(){
@@ -221,7 +220,10 @@ class Seashell {
     this.N=180;
   }
 
-  buildTube( buildSpine ) {
+  buildTube( scene, buildSpine ) {
+
+    console.log("building tube");
+    console.log(this);
 
     var geometrySpiral = new THREE.Geometry();
 
@@ -286,18 +288,20 @@ class Seashell {
       var scale = i/l; 
       // console.log(scale);
       mesh.scale.set (scale,scale,scale);
-      this._scene.add( mesh );
+      scene.add( mesh );
     }
-    if (buildSpine) { // render spiral spine
+
+    // render spiral spine if flag was passed
+    if (buildSpine) { 
       var lineMaterial = new THREE.LineBasicMaterial({
         color: 0xeeeeee
       });
       var spineLine = new THREE.Line( geometrySpiral, lineMaterial );
-      this._scene.add( spineLine );
+      scene.add( spineLine );
     }
   }
 
-  buildDots() {
+  buildDots( scene ) {
     var sphere; 
     var pos; 
     var radius = 0.5; //— sphere radius. Default is 50.
@@ -324,7 +328,7 @@ class Seashell {
         pos = this._shell[i][j]; 
 
         sphere.position.set( pos.x, pos.y, pos.z );
-        this._scene.add( sphere );
+        scene.add( sphere );
       }
     }
   }

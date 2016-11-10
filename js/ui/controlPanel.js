@@ -6,40 +6,73 @@ controlDiv.setAttribute("id",'controlPanel')
 //   newDiv.appendChild(newContent); //add the text node to the newly created div.
 document.body.appendChild(controlDiv); 
 
-//add slider
+var cFormDiv = document.createElement("div");
+controlDiv.appendChild(cFormDiv);
+var exportDiv = document.createElement("div");
+controlDiv.appendChild(exportDiv);
 
-//<input type="range" min="0" max="50" value="25" />
-var slider = document.createElement("input");
-slider.setAttribute("type",'range');
-slider.setAttribute("min",'0');
-slider.setAttribute("max",'50');
-slider.setAttribute("value",'10');
-slider.setAttribute("step",'5');
-controlDiv.appendChild(slider);
+// create form & add it to control div
+var cForm = document.createElement('form');
+cFormDiv.appendChild(cForm);
 
-slider.addEventListener("oninput", function(){
-    console.log("on input ");
-    showValue(this.value);
+//add sliders
+addFormParam(cForm, "A", 0.25, 0.1, 1.0, 0.05);
+addFormParam(cForm, "turns", 6.4, 0.4, 10.0, 0.2);
+addFormParam(cForm, "deltaTheta", 18.0, 0.0, 30.0, 1.0);
+addFormParam(cForm, "D", 1.0, 0.0, 10.0, 1.0);
+addFormParam(cForm, "steps", 0.0, 0.0, 10.0, 1.0);
+addFormParam(cForm, "cSteps", 14.0, 1.0, 20.0, 1.0);
+addFormParam(cForm, "alpha", 83.0, 0.0, 90.0, 1.0);
+addFormParam(cForm, "beta", 80.0, 0.0, 90.0, 1.0);
+addFormParam(cForm, "phi", 70.0, 0.0, 90.0, 1.0);
+addFormParam(cForm, "mu", 30.0, 0.0, 90.0, 1.0);
+addFormParam(cForm, "omega", 30.0, 0.0, 90.0, 1.0);
+
+var rebuildButton = document.createElement("button");
+rebuildButton.type = "submit";
+rebuildButton.innerHTML = "rebuild";
+cForm.appendChild(rebuildButton);
+
+// to takeover its submit event.
+cForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  buildScene(); // in seashell.js
 });
-
 
 //add export button 
 // 1. Create the button
 var button = document.createElement("button");
 button.innerHTML = "export obj";
 // 2. Append somewhere
-controlDiv.appendChild(button);
+exportDiv.appendChild(button);
 
 // 3. Add event handler
 button.addEventListener ("click", function() {
   exportToObj();
 });
 
-function showValue(newValue)
-{
-    // document.getElementById("range").innerHTML=newValue;
-    console.log(newValue);
+function addFormParam(frm, d, vl, mn, mx, stp) {
+  //<input type="range" min="0" max="50" value="25" />
+  var slider = document.createElement("input");
+  slider.setAttribute( "id", d );
+  slider.setAttribute( "type",'range' );
+  slider.setAttribute( "min", mn );
+  slider.setAttribute( "max", mx );
+  slider.setAttribute( "value", vl );
+  slider.setAttribute( "step", stp );
+
+  var label = document.createElement("label");
+  label.setAttribute("for", d);
+  label.innerHTML = d;
+  frm.appendChild(label);
+
+  frm.appendChild( slider );
+
+  frm.appendChild( document.createElement("br") );
 }
+
+
 
 function exportToObj() {
 
