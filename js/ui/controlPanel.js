@@ -6,12 +6,27 @@ controlDiv.setAttribute("id",'controlPanel')
 //   newDiv.appendChild(newContent); //add the text node to the newly created div.
 document.body.appendChild(controlDiv); 
 
+//add slider
+
+//<input type="range" min="0" max="50" value="25" />
+var slider = document.createElement("input");
+slider.setAttribute("type",'range');
+slider.setAttribute("min",'0');
+slider.setAttribute("max",'50');
+slider.setAttribute("value",'10');
+slider.setAttribute("step",'5');
+controlDiv.appendChild(slider);
+
+slider.addEventListener("oninput", function(){
+    console.log("on input ");
+    showValue(this.value);
+});
+
 
 //add export button 
 // 1. Create the button
 var button = document.createElement("button");
 button.innerHTML = "export obj";
-
 // 2. Append somewhere
 controlDiv.appendChild(button);
 
@@ -20,10 +35,11 @@ button.addEventListener ("click", function() {
   exportToObj();
 });
 
-/* Read 
-
-https://css-tricks.com/use-button-element/
-*/
+function showValue(newValue)
+{
+    // document.getElementById("range").innerHTML=newValue;
+    console.log(newValue);
+}
 
 function exportToObj() {
 
