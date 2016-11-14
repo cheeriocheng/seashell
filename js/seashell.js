@@ -63,10 +63,10 @@ function init() {
     controls.autoRotate = false; //true;
     controls.enablePan = false;
 
-    //coordinate sys
+    // coordinate sys
     // X axis is red. The Y axis is green. The Z axis is blue.
-    // object = new THREE.AxisHelper( 1 );             
-    // scene.add( object );
+    object = new THREE.AxisHelper( 2 );             
+    scene.add( object );
     
   
     
@@ -75,38 +75,65 @@ function init() {
     // var spiral = ss.spiral; 
     
    
-
-
      //DRAW IN DOTS ----
-    // var sphere; 
-    // var pos; 
-    // var radius = 0.5; //— sphere radius. Default is 50.
-    // var widthSegments = 10; //— number of horizontal segments
-    // var heightSegments = 10; 
+    var sphere; 
+    var pos; 
+    var radius = 0.5; //— sphere radius. Default is 50.
+    var widthSegments = 10; //— number of horizontal segments
+    var heightSegments = 10; 
 
-    // var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.SmoothShading}); //FlatShading:SmoothShading
+    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.SmoothShading}); //FlatShading:SmoothShading
+   console.log("spiral length" , ss.spiral.length);
+   console.log("circle length" , ss._shell[80].length);
+   
+    for (var i = 80 ; i< ss.spiral.length; i++){
+        for (var j = 0 ; j < ss._shell[i].length; j++){
+           // oneEllipse= new THREE.Geometry(); 
+           // oneEllipse.vertices.push(ss._shell[i][j]);  
 
-    // for (var i = 40 ; i< ss.spiral.length; i++){
-    //     for (var j = 0 ; j < ss._shell[i].length; j++){
-    //        // oneEllipse= new THREE.Geometry(); 
-    //        // oneEllipse.vertices.push(ss._shell[i][j]);  
+          if (j ==0 ){
+              radius = .2;
+            }
+           else if(j%10==0){
+            radius = 0.1 ;//0.3;
+           }else{
+            radius = 0.05; //0.5 //0.1 = one drop 
+           }
+           sphere = new THREE.Mesh( new THREE.SphereGeometry( radius, widthSegments, heightSegments ), material );
+           pos = ss._shell[i][j]; 
 
-          
-    //        if(j> 12 && j% 8 == 4){
-    //         radius = 1 ;//0.3;
-    //        }else{
-    //         radius = 0.5; //0.5 //0.1 = one drop 
-    //        }
-    //        sphere = new THREE.Mesh( new THREE.SphereGeometry( radius, widthSegments, heightSegments ), material );
-    //        pos = ss._shell[i][j]; 
-
-    //         sphere.position.set( pos.x, pos.y, pos.z );
-    //         scene.add( sphere );
+            sphere.position.set( pos.x, pos.y, pos.z );
+            scene.add( sphere );
 
 
 
-    //     }
-    // }
+        }
+    }
+
+    //DRAW PLANES ---
+    var surfaceGeom = new THREE.Geometry(); 
+
+    var tempInd = 118 ;
+    var lastCstep = ss.cSteps-1; 
+    //counter clockwise 
+    for (var i = 0; i < lastCstep ; i++){
+      surfaceGeom.vertices.push( ss._shell[tempInd][i]  )
+      surfaceGeom.vertices.push( ss._shell[tempInd+1][i] )
+      surfaceGeom.vertices.push(  ss._shell[tempInd][i+1])
+      surfaceGeom.faces.push( new THREE.Face3( i*3, i*3+1, i*3+2 ) );
+    }
+
+     surfaceGeom.vertices.push( ss._shell[tempInd][lastCstep]  )
+      surfaceGeom.vertices.push( ss._shell[tempInd+1][lastCstep] )
+      surfaceGeom.vertices.push(  ss._shell[tempInd][0])
+      surfaceGeom.faces.push( new THREE.Face3( lastCstep*3 , lastCstep*3+1, lastCstep*3+2 ) );
+
+    var surfaceMesh = new THREE.Mesh( surfaceGeom, new THREE.MeshBasicMaterial({color:0x660033,         side:THREE.DoubleSide}));
+    scene.add(surfaceMesh);
+
+    
+
+    // ----- DRAW PLANES
 
     //---- DRAW IN DOTS 
 
@@ -114,51 +141,51 @@ function init() {
 
     //DRAW IN TUBE -------
     
-    var geometrySpiral = new THREE.Geometry();
+    // var geometrySpiral = new THREE.Geometry();
   
 
-    var extrudeShapePoints = [], count = 10;
-    for ( var i = 0; i < count; i ++ ) {
-        var l = 0.5;
-        var a = 2 * i / count * Math.PI;
-        extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
-    }
+    // var extrudeShapePoints = [], count = 10;
+    // for ( var i = 0; i < count; i ++ ) {
+    //     var l = 0.5;
+    //     var a = 2 * i / count * Math.PI;
+    //     extrudeShapePoints.push( new THREE.Vector2 ( Math.cos( a ) * l, Math.sin( a ) * l ) );
+    // }
 
-    var extrudeShape = new THREE.Shape( extrudeShapePoints );
+    // var extrudeShape = new THREE.Shape( extrudeShapePoints );
 
-     var extrudeMaterial = new THREE.MeshLambertMaterial( { color: 0xeeeeee, wireframe: false } );
+    //  var extrudeMaterial = new THREE.MeshLambertMaterial( { color: 0xeeeeee, wireframe: false } );
 
 
-    //for each point on the spiral 
-    for (var i = 0 ; i< ss.spiral.length; i++){
-        geometrySpiral.vertices.push(ss.spiral[i]);  
+    // //for each point on the spiral 
+    // for (var i = 0 ; i< ss.spiral.length; i++){
+    //     geometrySpiral.vertices.push(ss.spiral[i]);  
 
-       var oneEllipse = new THREE.Geometry(); 
+    //    var oneEllipse = new THREE.Geometry(); 
        
-     //  var c = 0x011000 + 0x0000e0* i ;
+    //  //  var c = 0x011000 + 0x0000e0* i ;
 
 
 
-       for (var j = 0 ; j < ss._shell[i].length; j++){
-           // oneEllipse= new THREE.Geometry(); 
-           oneEllipse.vertices.push(ss._shell[i][j]);  
+    //    for (var j = 0 ; j < ss._shell[i].length; j++){
+    //        // oneEllipse= new THREE.Geometry(); 
+    //        oneEllipse.vertices.push(ss._shell[i][j]);  
 
-       }
-       oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
-       //cx
+    //    }
+    //    oneEllipse.vertices.push(ss._shell[i][0]);  //completes full loop
+    //    //cx
 
-       var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
-       extusionSpline.closed = true;
-        var extrudeSettings = {
-        steps           : 30, //int. number of points used for subdividing segements of extrude spline //10
-        bevelEnabled    : false,
-        extrudePath     : extusionSpline
-    };
-    var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
+    //    var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
+    //    extusionSpline.closed = true;
+    //     var extrudeSettings = {
+    //     steps           : 30, //int. number of points used for subdividing segements of extrude spline //10
+    //     bevelEnabled    : false,
+    //     extrudePath     : extusionSpline
+    // };
+    // var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
 
-    var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
+    // var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
 
-    scene.add( mesh );
+    // scene.add( mesh );
     ///----------
 
         ////render the ellipse in single lines
@@ -171,7 +198,7 @@ function init() {
        //                  }))
        //  );
        
-    }
+    // }
 
     //render spiral spine
     // var lineMaterial = new THREE.LineBasicMaterial({
