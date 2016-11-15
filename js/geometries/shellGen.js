@@ -8,7 +8,7 @@ class Seashell {
     this.A = 0.25 ; //0.1
     this.turns =  5;  //6; // how many turns in the shell
     this.deltaTheta = degToRad(15) ; //degrees per new session
-    this.minStep = 1 ; 
+    this.minStep = 4 ;  //1
 
     this.D = 1 ; 
     this.steps = 60; //how many ellipses C to draw; 
@@ -98,10 +98,10 @@ class Seashell {
   }
 
  //while distance is smaller than step, keep adding to theta 
-  getNextVertexOnSpiral(theta , lastVertex, newVertex ){
+  getNextVertexOnSpiral(theta , lastVertex ){
     
     theta += this.deltaTheta;
-    newVertex = this.getVertexAtTheta(theta);
+    var newVertex = this.getVertexAtTheta(theta);
     var dist = newVertex.distanceTo(lastVertex); 
 
     while(dist< this.minStep ) {
@@ -109,7 +109,8 @@ class Seashell {
      newVertex = this.getVertexAtTheta(theta);
      dist = newVertex.distanceTo(lastVertex); 
     }
-    return theta ;
+
+    return [theta , newVertex] ;
   }
 
   getRadAtTheta(theta){
@@ -144,11 +145,19 @@ class Seashell {
       
 
       for ( var i = 0; i < this.steps; i ++ ) {
-          var newVertex = new THREE.Vector3(0,0,0); 
-          theta = this.getNextVertexOnSpiral(theta, lastVertex , newVertex); 
-          rad = this.getRadAtTheta (theta);
+                   
+          //equal angualar increments 
           // theta +=  this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
-          //rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );     
+          // rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );     
+          // var newVertex = this.getVertexAtTheta (theta) ;
+
+          //minimal space between steps 
+           var newVertex; 
+          [theta, newVertex] = this.getNextVertexOnSpiral(theta, lastVertex ); 
+          console.log(i, newVertex);
+          rad = this.getRadAtTheta (theta);
+         
+          //Qtip : keep newVertex at (0,0,0) to make a furball
 
           spiralPointArray.push(newVertex);
           lastVertex = newVertex; 
@@ -158,18 +167,10 @@ class Seashell {
 
           var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
 
-          //cx
-          // this.cSteps = 0.2* this.steps;
-          
-          // var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
-          
-      //    console.log ( tempCsteps, this.steps); 
           
           for (var j = 0; j < this.cSteps ; j++) 
-          // for (var j = 0; j < tempCsteps ; j++) 
           {
             
-            // var s = j * Math.PI * 2 / tempCsteps; 
             var s= j * Math.PI * 2.0 / this.cSteps;  //angular step around the ellipse 
 
            //   console.log (s); 
@@ -296,9 +297,9 @@ class Seashell {
     this.calcSpiral();
 
     // add tube mesh for each point on the spiral 
-    // starting with -36
+    // starting with -32
     var l = this._spiral.length ;  
-    for (var i = l- 32 ; i<l; i++){
+    for (var i = 0 ; i<l; i++){
 
       geometrySpiral.vertices.push(this._spiral[i]);  
       var oneEllipse = new THREE.Geometry(); 

@@ -69,7 +69,7 @@ function buildScene() {
   // ss.buildDots( scene );
 
   //DRAW IN TUBE -------
-  ss.buildTube( scene, true, true  ); // renderSpine, renderTube
+  ss.buildTube( scene, false, true  ); // renderSpine, renderTube
 }
 
 
