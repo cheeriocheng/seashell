@@ -9,8 +9,9 @@ class Seashell {
     this.turns =  5;  //6; // how many turns in the shell
     this.deltaTheta = degToRad(15) ; //degrees per new session
 
+
     this.D = 1 ; 
-    this.steps = 0; //how many ellipses C to draw; to be calculated
+    this.steps = 60; //how many ellipses C to draw; 
     this.cSteps = 30; //how many straight lines makes an ellipse C  //30
     this.alpha= degToRad(83); 
     this.beta=degToRad(42); 
@@ -96,18 +97,35 @@ class Seashell {
     this.omega = degToRad(p["omega"]);
   }
 
+  nextMinTheta(t){
+    return t+this.deltaTheta;
+
+  }
+
   calcSpiral(){
       var spiralPointArray = [];
       var shellEllipseArray = [];
-      this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
-       // console.log (this.steps); 
+    
+      // this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
+      
+       console.log ("total steps in spiral: ", this.steps); 
 
-   
+
+      var theta = 0 ;  
+      var rad, lastRad; 
+      var stepLength = 1  ;
+
       for ( var i = 0; i < this.steps; i ++ ) {
           
-          var theta =  i * this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
-          var rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );
+          //while distance is smaller than step, keep adding to theta 
 
+          // theta +=  this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
+          theta = this.nextMinTheta(theta); 
+          rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );
+          
+          
+          // console.log(i, Math.round(theta*180/Math.PI), rad);
+          
           //helix 
           var x =  this.A * rad * Math.sin(this.beta) * Math.cos(theta) * this.D;
           var y =  this.A * rad * Math.sin(this.beta) * Math.sin(theta);
@@ -220,7 +238,8 @@ class Seashell {
     this.N=180;
   }
 
-  buildTube( scene, buildSpine ) {
+
+  buildTube( scene, renderSpine, renderTube ) {
 
     console.log("building tube");
     console.log(this);
@@ -243,8 +262,8 @@ class Seashell {
       tempX = Math.cos( t ) * b; 
       tempY = Math.sin( t ) * a; 
 
-      tempX += -c*Math.cos(t*k) ;
-      tempY += c*Math.sin(t*k) ;
+      // tempX += -c*Math.cos(t*k) ;
+      // tempY += c*Math.sin(t*k) ;
 
       extrudeShapePoints.push( new THREE.Vector2 ( tempX, tempY));
     }
@@ -284,22 +303,28 @@ class Seashell {
       
       var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
 
-      var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
-      var scale = i/l; 
-      // console.log(scale);
-      mesh.scale.set (scale,scale,scale);
-      scene.add( mesh );
+     
+      if(renderTube){
+         var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
+        var scale = i/l; 
+        // console.log(scale);
+        mesh.scale.set (scale,scale,scale);
+        scene.add( mesh );  
+      }
+      
     }
 
     // render spiral spine if flag was passed
-    if (buildSpine) { 
+    if (renderSpine) { 
       var lineMaterial = new THREE.LineBasicMaterial({
-        color: 0xeeeeee
+        color: 0xee00ee
       });
       var spineLine = new THREE.Line( geometrySpiral, lineMaterial );
       scene.add( spineLine );
     }
   }
+
+
 
   buildDots( scene ) {
     var sphere; 

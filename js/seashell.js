@@ -38,10 +38,10 @@ function buildScene() {
   controls.autoRotate = false; //true;
   controls.enablePan = false;
 
-  //coordinate sys
+  // coordinate sys
   // X axis is red. The Y axis is green. The Z axis is blue.
-  // object = new THREE.AxisHelper( 1 );             
-  // scene.add( object );
+  object = new THREE.AxisHelper( 1 );             
+  scene.add( object );
   
   // light
   var light = new THREE.DirectionalLight(0xffffff);
@@ -64,11 +64,12 @@ function buildScene() {
 
   ss.updateParams( p );
 
+
   //DRAW IN DOTS ----
   // ss.buildDots( scene );
 
   //DRAW IN TUBE -------
-  ss.buildTube( scene, false ); // buildSpine -> true/false
+  ss.buildTube( scene, true, true  ); // renderSpine, renderTube
 }
 
 
