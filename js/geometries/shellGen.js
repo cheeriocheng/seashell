@@ -8,7 +8,7 @@ class Seashell {
     this.A = 0.25 ; //0.1
     this.turns =  5;  //6; // how many turns in the shell
     this.deltaTheta = degToRad(15) ; //degrees per new session
-
+    this.minStep = 1 ; 
 
     this.D = 1 ; 
     this.steps = 60; //how many ellipses C to draw; 
@@ -97,8 +97,34 @@ class Seashell {
     this.omega = degToRad(p["omega"]);
   }
 
-  nextMinTheta(t){
-    return t+this.deltaTheta;
+ //while distance is smaller than step, keep adding to theta 
+  getNextVertexOnSpiral(theta , lastVertex, newVertex ){
+    
+    theta += this.deltaTheta;
+    newVertex = this.getVertexAtTheta(theta);
+    var dist = newVertex.distanceTo(lastVertex); 
+
+    while(dist< this.minStep ) {
+     theta += this.deltaTheta;
+     newVertex = this.getVertexAtTheta(theta);
+     dist = newVertex.distanceTo(lastVertex); 
+    }
+    return theta ;
+  }
+
+  getRadAtTheta(theta){
+    return  Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );
+  }
+
+  getVertexAtTheta(theta){
+      
+    var rad = this.getRadAtTheta(theta);
+    
+    var x =  this.A * rad * Math.sin(this.beta) * Math.cos(theta) * this.D;
+    var y =  this.A * rad * Math.sin(this.beta) * Math.sin(theta);
+    var z = -this.A * rad * Math.cos(this.beta);    
+
+    return new THREE.Vector3(x,y,z);
 
   }
 
@@ -107,35 +133,28 @@ class Seashell {
       var shellEllipseArray = [];
     
       // this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
+
       
-       console.log ("total steps in spiral: ", this.steps); 
+      console.log ("total steps in spiral: ", this.steps); 
 
 
       var theta = 0 ;  
-      var rad, lastRad; 
-      var stepLength = 1  ;
+      var rad; 
+      var lastVertex = this.getVertexAtTheta(theta ); 
+      
 
       for ( var i = 0; i < this.steps; i ++ ) {
-          
-          //while distance is smaller than step, keep adding to theta 
-
+          var newVertex = new THREE.Vector3(0,0,0); 
+          theta = this.getNextVertexOnSpiral(theta, lastVertex , newVertex); 
+          rad = this.getRadAtTheta (theta);
           // theta +=  this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
-          theta = this.nextMinTheta(theta); 
-          rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );
-          
-          
-          // console.log(i, Math.round(theta*180/Math.PI), rad);
-          
-          //helix 
-          var x =  this.A * rad * Math.sin(this.beta) * Math.cos(theta) * this.D;
-          var y =  this.A * rad * Math.sin(this.beta) * Math.sin(theta);
-          var z = -this.A * rad * Math.cos(this.beta);        
+          //rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );     
 
-          spiralPointArray.push(new THREE.Vector3(x,y,z));
+          spiralPointArray.push(newVertex);
+          lastVertex = newVertex; 
 
           // Generate ellipse around each point of spiral
           shellEllipseArray[i] = [];
-
 
           var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
 
@@ -145,6 +164,7 @@ class Seashell {
           // var tempCsteps = Math.round( this.cSteps * i / this.steps)+1; 
           
       //    console.log ( tempCsteps, this.steps); 
+          
           for (var j = 0; j < this.cSteps ; j++) 
           // for (var j = 0; j < tempCsteps ; j++) 
           {
@@ -165,9 +185,9 @@ class Seashell {
            // r2 += surfrad;
           
 
-            var ellipseX = x + Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
-            var ellipseY = y + Math.cos(s + this.phi) * Math.sin(theta + this.omega) * r2 * rad;
-            var ellipseZ = z + Math.sin(s + this.phi) * r2 * rad;
+            var ellipseX = lastVertex.x + Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
+            var ellipseY = lastVertex.y + Math.cos(s + this.phi) * Math.sin(theta + this.omega) * r2 * rad;
+            var ellipseZ = lastVertex.z + Math.sin(s + this.phi) * r2 * rad;
             
             // adjust orientation of the 
             // x -= Math.sin(this.mu) * Math.sin(s + this.phi) * Math.sin(theta + this.omega) * r2;
