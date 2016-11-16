@@ -164,8 +164,8 @@ class Seashell {
 
           // Generate ellipse around each point of spiral
           shellEllipseArray[i] = [];
-
-          var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
+          var k = 1.5 ;
+          var r2 = k* Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
 
           
           for (var j = 0; j < this.cSteps ; j++) 
