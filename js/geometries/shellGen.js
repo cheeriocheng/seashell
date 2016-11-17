@@ -49,37 +49,35 @@ class Seashell {
     this.W2=0; 
     this.N=0;
     */
-
-    this.loadZcorp() ;
-    // this.loadHorseConch() ; 
-    // this.loadWentletrap() ; 
-
     this._spiral = null;
     this._shell = null; 
   }
 
   loadZcorp(){
       this.A =   0.25 ; //0.1
-      this.turns = 6.4; // how many turns in the shell
+      // this.turns = 6.7; // how many turns in the shell
       this.deltaTheta = degToRad(18) ; //degrees per new session //18 23
   
 
-      this.D = 1 ; 
-      this.steps = 0; //how many ellipses C to draw; to be calculated
+      this.minStep =  4;  //4
+      this.D = 1 ;  //1
+      this.steps = 30; //how many ellipses C to draw; to be calculated
       this.cSteps = 14; //12, 10 how many straight lines makes an ellipse C
       this.alpha= degToRad(83);  //83
       this.beta=degToRad(80);  //how steep the cone of spiral is 
-      this.phi=degToRad(70); 
-      this.mu=degToRad(30);  //10 how twisty the spiral is 
+      this.phi=degToRad(70);  //70
+      this.mu=degToRad(30);  //10,30 how twisty the spiral is 
       this.omega=degToRad(30);  
       
-      // this.a=0.12; //1.2; 
-      // this.b=.2 ; // 2.0; 
-      // this.L=1.4; 
-      // this.P=4; 
-      // this.W1=18; 
-      // this.W2=0.4; 
-      // this.N=18;
+      //opening of the tube 
+      this.a=0.12; 
+      this.b=0.2; 
+
+      this.L=1.4; 
+      this.P=4; 
+      this.W1=18; 
+      this.W2=0.4; 
+      this.N=18;
   }
 
 
@@ -89,7 +87,7 @@ class Seashell {
       this.deltaTheta = degToRad(10) ; //degrees per new session
 
       this.D = 1 ; 
-      this.steps = 0; //how many ellipses C to draw; to be calculated
+      this.steps = 30; //how many ellipses C to draw; to be calculated
       this.cSteps = 36; //how many straight lines makes an ellipse C
       this.alpha= degToRad(84); 
       this.beta=degToRad(-19); 
@@ -112,7 +110,7 @@ class Seashell {
     this.deltaTheta = degToRad(30) ; //degrees per new session
 
     this.D = 1 ; 
-    this.steps = 0; //how many ellipses C to draw; to be calculated
+    this.steps = 30; //how many ellipses C to draw
     this.cSteps = 36; //how many straight lines makes an ellipse C
     this.alpha= degToRad(86); 
     this.beta=degToRad(10); 
@@ -134,17 +132,21 @@ class Seashell {
 
   updateParams( p )
   {
-    this.A = p["A"];
-    this.turns = p["turns"];
-    this.deltaTheta = degToRad(p["deltaTheta"]);
-    this.D = p["D"];
-    this.steps = p["steps"];
-    this.cSteps = p["cSteps"];
-    this.alpha = degToRad(p["alpha"]);
-    this.beta = degToRad(p["beta"]);
-    this.phi = degToRad(p["phi"]);
-    this.mu = degToRad(p["mu"]);
-    this.omega = degToRad(p["omega"]);
+    //// get data from UI 
+    // this.A = p["A"];
+    // this.turns = p["turns"];
+    // this.deltaTheta = degToRad(p["deltaTheta"]);
+    // this.D = p["D"];
+    // this.steps = p["steps"];
+    // this.cSteps = p["cSteps"];
+    // this.alpha = degToRad(p["alpha"]);
+    // this.beta = degToRad(p["beta"]);
+    // this.phi = degToRad(p["phi"]);
+    // this.mu = degToRad(p["mu"]);
+    // this.omega = degToRad(p["omega"]);
+    
+    this.loadZcorp(); //glitch: disks flip..
+
 
 
     //generates this._spiral
@@ -219,10 +221,7 @@ class Seashell {
 
           // Generate ellipse around each point of spiral
           shellEllipseArray[i] = [];
-          var k = 1.5 ;
-          var r2 = k* Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle 
-
-          
+          var r2 =  Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle           
           for (var j = 0; j < this.cSteps ; j++) 
           {
             
@@ -251,6 +250,8 @@ class Seashell {
 
             // y += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2 ;
             ellipseY += Math.sin(this.mu) * Math.sin(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad;
+
+        
             
             shellEllipseArray[i].push(new THREE.Vector3(ellipseX,ellipseY,ellipseZ));
             
@@ -266,9 +267,10 @@ class Seashell {
 // render spiral spine 
   renderSpine(scene, ifRenderSpine){
     
-    console.log("rendering tube");
+  
 
     if (ifRenderSpine) { 
+      console.log("rendering spine");
       var geometrySpiral = new THREE.Geometry();
       
       for (var i = 0 ; i<this._spiral.length; i++){
@@ -284,11 +286,12 @@ class Seashell {
 
   buildTube( scene, ifRenderTube ) {
 
-    console.log("building tube");
+    // console.log("building tube");
     // console.log(this);
-    var extrudeShapePoints = [], count = 50;
-    var a = 4.3; 
-    var b = 1;
+    var extrudeShapePoints = [], count = 30;
+    //section 
+    var a = 4;  //ellipse size 4.3
+    var b = .8;//1
     var t =0;
 
     var c = 0.2 ; //0.2 
@@ -314,7 +317,7 @@ class Seashell {
 
     // add tube mesh for each point on the spiral 
     var l = this._spiral.length ;  
-    for (var i = 0 ; i<l; i++){
+    for (var i = 5; i<l; i++){
 
       // geometrySpiral.vertices.push(this._spiral[i]);  
       var oneEllipse = new THREE.Geometry(); 
@@ -322,70 +325,63 @@ class Seashell {
       // var c = 0x011000 + 0x0000e0* i;
 
       for (var j = 0 ; j < this._shell[i].length; j++){
+      // for (var j = this._shell[i].length-1; j >=0  ; j--){
         // oneEllipse= new THREE.Geometry(); 
         oneEllipse.vertices.push(this._shell[i][j]);  
       }
       oneEllipse.vertices.push(this._shell[i][0]);  //completes full loop
-      // oneEllipse.vertices.push(this._shell[i][1]);  //completes full loop
-      // cx
 
-      var extusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
-      extusionSpline.closed = true;
+   
+
+      var extrusionSpline =  new THREE.CatmullRomCurve3( oneEllipse.vertices );
+      extrusionSpline.type = 'catmullrom';
+      extrusionSpline.closed = true;
       var extrudeSettings = {
-        steps           : 60, //int. number of points used for subdividing segements of extrude spline //10
+        steps           : this.cSteps*3, //int. number of points used for subdividing segements of extrude spline 
         bevelEnabled    : false,
-        extrudePath     : extusionSpline
+        extrudePath     : extrusionSpline
       };
       
+
       var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
 
-     
       if(ifRenderTube){
          var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
-      //  var scale = i/l; 
-        // console.log(scale);
-      //  mesh.scale.set (scale,scale,scale);
         scene.add( mesh );  
-      }
-      
-    }
-
-
-  }
-
-
-
-  buildDots( scene ) {
-    var sphere; 
-    var pos; 
-    var radius = 0.5; //— sphere radius. Default is 50.
-    var widthSegments = 10; //— number of horizontal segments
-    var heightSegments = 10; 
-
-    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.SmoothShading}); //FlatShading:SmoothShading
-
-    // call method that generates this._spiral
-    this.calcSpiral();
-
-    for (var i = 40 ; i< this._spiral.length; i++){
-      for (var j = 0 ; j < this._shell[i].length; j++){
-        // oneEllipse= new THREE.Geometry(); 
-        // oneEllipse.vertices.push(this._shell[i][j]);  
-
-      
-        if (j> 12 && j% 8 == 4) {
-          radius = 1 ;//0.3;
-        } else {
-        radius = 0.5; //0.5 //0.1 = one drop 
-        }
-        sphere = new THREE.Mesh( new THREE.SphereGeometry( radius, widthSegments, heightSegments ), material );
-        pos = this._shell[i][j]; 
-
-        sphere.position.set( pos.x, pos.y, pos.z );
-        scene.add( sphere );
-      }
+      } 
     }
   }
+
+
+
+  // buildDots( scene ) {
+  //   var sphere; 
+  //   var pos; 
+  //   var radius = 0.5; //— sphere radius. Default is 50.
+  //   var widthSegments = 10; //— number of horizontal segments
+  //   var heightSegments = 10; 
+
+  //   var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide,  color: 0xFFFFFF, shading: THREE.SmoothShading}); //FlatShading:SmoothShading
+
+  //   for (var i = 40 ; i< this._spiral.length; i++){
+  //     for (var j = 0 ; j < this._shell[i].length; j++){
+  //       // oneEllipse= new THREE.Geometry(); 
+  //       // oneEllipse.vertices.push(this._shell[i][j]);  
+
+      
+  //       if (j> 12 && j% 8 == 4) {
+  //         radius = 1 ;//0.3;
+  //       } else {
+  //       radius = 0.5; //0.5 //0.1 = one drop 
+  //       }
+  //       sphere = new THREE.Mesh( new THREE.SphereGeometry( radius, widthSegments, heightSegments ), material );
+  //       pos = this._shell[i][j]; 
+
+  //       sphere.position.set( pos.x, pos.y, pos.z );
+  //       scene.add( sphere );
+  //     }
+  //   }
+  // }
 }
 
 
