@@ -327,9 +327,9 @@ class Seashell {
      
       if(renderTube){
          var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
-        var scale = i/l; 
+      //  var scale = i/l; 
         // console.log(scale);
-        mesh.scale.set (scale,scale,scale);
+      //  mesh.scale.set (scale,scale,scale);
         scene.add( mesh );  
       }
       
