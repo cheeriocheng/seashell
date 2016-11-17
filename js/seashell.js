@@ -59,7 +59,6 @@ function buildScene() {
   ss = new Seashell();
 
   p = getControlParams();
-
   // console.log(p);
 
   ss.updateParams( p );
@@ -67,9 +66,10 @@ function buildScene() {
 
   //DRAW IN DOTS ----
   // ss.buildDots( scene );
-
+  //DRAW THE SPIEN 
+  ss.renderSpine(scene, false); 
   //DRAW IN TUBE -------
-  ss.buildTube( scene, false, true  ); // renderSpine, renderTube
+  ss.buildTube( scene, true  ); // renderSpine, 
 }
 
 

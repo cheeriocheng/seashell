@@ -82,6 +82,56 @@ class Seashell {
       // this.N=18;
   }
 
+
+  loadHorseConch(){
+      
+      this.turns = 6; // how many turns in the shell
+      this.deltaTheta = degToRad(10) ; //degrees per new session
+
+      this.D = 1 ; 
+      this.steps = 0; //how many ellipses C to draw; to be calculated
+      this.cSteps = 36; //how many straight lines makes an ellipse C
+      this.alpha= degToRad(84); 
+      this.beta=degToRad(-19); 
+      this.phi=degToRad(45); 
+      this.mu=degToRad(1); 
+      this.omega=degToRad(-2); 
+      
+      this.A =  0.5;
+      this.a=0.4; //1.2; 
+      this.b=.14 ; // 2.0; 
+      this.L=8; 
+      this.P=0; 
+      this.W1=6; 
+      this.W2=27; 
+      this.N=8;
+
+  }
+  loadWentletrap(){
+    this.turns = 10; // how many turns in the shell
+    this.deltaTheta = degToRad(30) ; //degrees per new session
+
+    this.D = 1 ; 
+    this.steps = 0; //how many ellipses C to draw; to be calculated
+    this.cSteps = 36; //how many straight lines makes an ellipse C
+    this.alpha= degToRad(86); 
+    this.beta=degToRad(10); 
+    this.phi=degToRad(-45); 
+    this.mu=degToRad(5 ); 
+    this.omega=degToRad(1); 
+    
+    this.A =  0.9;
+    this.a=0.2;
+    this.b=.2 ; 
+    this.L=0.14; 
+    this.P=40; 
+    this.W1=180; 
+    this.W2=0.4; 
+    this.N=180;
+  }
+
+
+
   updateParams( p )
   {
     this.A = p["A"];
@@ -95,8 +145,15 @@ class Seashell {
     this.phi = degToRad(p["phi"]);
     this.mu = degToRad(p["mu"]);
     this.omega = degToRad(p["omega"]);
+
+
+    //generates this._spiral
+    this.calcSpiral();
   }
 
+  //equal angular steps means many small steps at the center of the shell,
+  //which is a lot of triangles wasted on small area
+  //this also jams support material inside model
  //while distance is smaller than step, keep adding to theta 
   getNextVertexOnSpiral(theta , lastVertex ){
     
@@ -133,10 +190,8 @@ class Seashell {
       var spiralPointArray = [];
       var shellEllipseArray = [];
     
-      // this.steps = Math.round ( this.turns * Math.PI *2 / this.deltaTheta );
-
-      
-      console.log ("total steps in spiral: ", this.steps); 
+    
+      console.log ("generating spiral. total steps in spiral: ", this.steps); 
 
 
       var theta = 0 ;  
@@ -146,15 +201,15 @@ class Seashell {
 
       for ( var i = 0; i < this.steps; i ++ ) {
                    
-          //equal angualar increments 
+          //V1 equal angualar increments ----
           // theta +=  this.deltaTheta ; // maplinear (i, 0, n, 0, turns);
           // rad = Math.exp( theta * Math.cos(this.alpha) / Math.sin(this.alpha) );     
           // var newVertex = this.getVertexAtTheta (theta) ;
 
-          //minimal space between steps 
+          //V2 minimal space between steps ---
            var newVertex; 
           [theta, newVertex] = this.getNextVertexOnSpiral(theta, lastVertex ); 
-          console.log(i, newVertex);
+          // console.log(i, newVertex);
           rad = this.getRadAtTheta (theta);
          
           //Qtip : keep newVertex at (0,0,0) to make a furball
@@ -206,67 +261,31 @@ class Seashell {
       this._spiral = spiralPointArray;
       //and 
       this._shell = shellEllipseArray; 
-
-     
-
   }
 
-
-  loadHorseConch(){
-      
-      this.turns = 6; // how many turns in the shell
-      this.deltaTheta = degToRad(10) ; //degrees per new session
-
-      this.D = 1 ; 
-      this.steps = 0; //how many ellipses C to draw; to be calculated
-      this.cSteps = 36; //how many straight lines makes an ellipse C
-      this.alpha= degToRad(84); 
-      this.beta=degToRad(-19); 
-      this.phi=degToRad(45); 
-      this.mu=degToRad(1); 
-      this.omega=degToRad(-2); 
-      
-      this.A =  0.5;
-      this.a=0.4; //1.2; 
-      this.b=.14 ; // 2.0; 
-      this.L=8; 
-      this.P=0; 
-      this.W1=6; 
-      this.W2=27; 
-      this.N=8;
-
-  }
-  loadWentletrap(){
-    this.turns = 10; // how many turns in the shell
-    this.deltaTheta = degToRad(30) ; //degrees per new session
-
-    this.D = 1 ; 
-    this.steps = 0; //how many ellipses C to draw; to be calculated
-    this.cSteps = 36; //how many straight lines makes an ellipse C
-    this.alpha= degToRad(86); 
-    this.beta=degToRad(10); 
-    this.phi=degToRad(-45); 
-    this.mu=degToRad(5 ); 
-    this.omega=degToRad(1); 
+// render spiral spine 
+  renderSpine(scene, ifRenderSpine){
     
-    this.A =  0.9;
-    this.a=0.2;
-    this.b=.2 ; 
-    this.L=0.14; 
-    this.P=40; 
-    this.W1=180; 
-    this.W2=0.4; 
-    this.N=180;
+    console.log("rendering tube");
+
+    if (ifRenderSpine) { 
+      var geometrySpiral = new THREE.Geometry();
+      
+      for (var i = 0 ; i<this._spiral.length; i++){
+        geometrySpiral.vertices.push(this._spiral[i]);  
+      }
+      var lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xee00ee
+      });
+      var spineLine = new THREE.Line( geometrySpiral, lineMaterial );
+      scene.add( spineLine );
+    }
   }
 
-
-  buildTube( scene, renderSpine, renderTube ) {
+  buildTube( scene, ifRenderTube ) {
 
     console.log("building tube");
-    console.log(this);
-
-    var geometrySpiral = new THREE.Geometry();
-
+    // console.log(this);
     var extrudeShapePoints = [], count = 50;
     var a = 4.3; 
     var b = 1;
@@ -293,15 +312,11 @@ class Seashell {
 
     var extrudeMaterial = new THREE.MeshLambertMaterial( { color: 0xeeeeee, wireframe: false } );
 
-    // call method that generates this._spiral
-    this.calcSpiral();
-
     // add tube mesh for each point on the spiral 
-    // starting with -32
     var l = this._spiral.length ;  
     for (var i = 0 ; i<l; i++){
 
-      geometrySpiral.vertices.push(this._spiral[i]);  
+      // geometrySpiral.vertices.push(this._spiral[i]);  
       var oneEllipse = new THREE.Geometry(); 
        
       // var c = 0x011000 + 0x0000e0* i;
@@ -325,7 +340,7 @@ class Seashell {
       var extrudeGeometry = new THREE.ExtrudeGeometry( extrudeShape, extrudeSettings );
 
      
-      if(renderTube){
+      if(ifRenderTube){
          var mesh = new THREE.Mesh( extrudeGeometry, extrudeMaterial );
       //  var scale = i/l; 
         // console.log(scale);
@@ -335,14 +350,7 @@ class Seashell {
       
     }
 
-    // render spiral spine if flag was passed
-    if (renderSpine) { 
-      var lineMaterial = new THREE.LineBasicMaterial({
-        color: 0xee00ee
-      });
-      var spineLine = new THREE.Line( geometrySpiral, lineMaterial );
-      scene.add( spineLine );
-    }
+
   }
 
 
