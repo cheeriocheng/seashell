@@ -21,6 +21,7 @@ class Seashell {
     
     this.a=0.12; //1.2; 
     this.b=.2 ; // 2.0; 
+    this.c = 0;
     this.L=0; 
     this.P=0; 
     this.W1=0; 
@@ -56,76 +57,33 @@ class Seashell {
   loadZcorp(){
       this.A =   0.25 ; //0.1
       // this.turns = 6.7; // how many turns in the shell
-      this.deltaTheta = degToRad(18) ; //degrees per new session //18 23
+      this.deltaTheta = degToRad(4.5) ; //degrees per new session //18 23
   
 
-      this.minStep =  4;  //4
+      this.minStep = .5; // 3.5;  //4
       this.D = 1 ;  //1
-      this.steps = 30; //how many ellipses C to draw; to be calculated
-      this.cSteps = 14; //12, 10 how many straight lines makes an ellipse C
-      this.alpha= degToRad(83);  //83
+      this.steps =67; //30,100 how many ellipses C to draw
+      this.cSteps = 60; //12, 10 how many straight lines makes an ellipse C
+      this.alpha= degToRad(82);  //83
       this.beta=degToRad(80);  //how steep the cone of spiral is 
       this.phi=degToRad(70);  //70
-      this.mu=degToRad(30);  //10,30 how twisty the spiral is 
+      this.mu=degToRad(10);  //10,30 how twisty the spiral is 
       this.omega=degToRad(30);  
       
       //opening of the tube 
-      this.a=0.12; 
-      this.b=0.2; 
+      this.a=0.2; 
+      this.b=0.3;//0.2; 
+      this.c = 0.01;
 
-      this.L=1.4; 
-      this.P=4; 
-      this.W1=18; 
+        //extrusion
+      this.eA = 0.6 ; //1.2;
+      this.eB = 0.3; //0.6;  //0.5;
+
+      this.L=0; //1.4; 
+      this.P=.04 ;//4; 
+      this.W1=1.8; 
       this.W2=0.4; 
-      this.N=18;
-  }
-
-
-  loadHorseConch(){
-      
-      this.turns = 6; // how many turns in the shell
-      this.deltaTheta = degToRad(10) ; //degrees per new session
-
-      this.D = 1 ; 
-      this.steps = 30; //how many ellipses C to draw; to be calculated
-      this.cSteps = 36; //how many straight lines makes an ellipse C
-      this.alpha= degToRad(84); 
-      this.beta=degToRad(-19); 
-      this.phi=degToRad(45); 
-      this.mu=degToRad(1); 
-      this.omega=degToRad(-2); 
-      
-      this.A =  0.5;
-      this.a=0.4; //1.2; 
-      this.b=.14 ; // 2.0; 
-      this.L=8; 
-      this.P=0; 
-      this.W1=6; 
-      this.W2=27; 
-      this.N=8;
-
-  }
-  loadWentletrap(){
-    this.turns = 10; // how many turns in the shell
-    this.deltaTheta = degToRad(30) ; //degrees per new session
-
-    this.D = 1 ; 
-    this.steps = 30; //how many ellipses C to draw
-    this.cSteps = 36; //how many straight lines makes an ellipse C
-    this.alpha= degToRad(86); 
-    this.beta=degToRad(10); 
-    this.phi=degToRad(-45); 
-    this.mu=degToRad(5 ); 
-    this.omega=degToRad(1); 
-    
-    this.A =  0.9;
-    this.a=0.2;
-    this.b=.2 ; 
-    this.L=0.14; 
-    this.P=40; 
-    this.W1=180; 
-    this.W2=0.4; 
-    this.N=180;
+      this.N=20;//18
   }
 
 
@@ -221,24 +179,32 @@ class Seashell {
 
           // Generate ellipse around each point of spiral
           shellEllipseArray[i] = [];
-          var r2 =  Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle           
+        
+
+
+
           for (var j = 0; j < this.cSteps ; j++) 
           {
             
             var s= j * Math.PI * 2.0 / this.cSteps;  //angular step around the ellipse 
 
-           //   console.log (s); 
-           //  var r2 = Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle s
-            
-           //  // add surface manipulations
-           // var surfrad = 0;
-           //  if (this.W1==0 || this.W2==0 || this.N==0) surfrad = 0;
-           //  else {
-           //    var lt = (Math.PI * 2 / this.N) * ( this.N*this.theta / Math.PI / 2 - Math.round(this.N* theta / Math.PI / 2) );
-           //    surfrad = this.L * Math.exp( -( Math.pow(2*(s-this.P)/this.W1, 2) + Math.pow(2*lt/this.W2, 2) ) );          
-           //  }
-           // r2 += surfrad;
-          
+              var r2 =  Math.pow( Math.pow(Math.cos(s)/this.a,2) + Math.pow(Math.sin(s)/this.b,2), -0.5 ); //radius at this given angle    
+
+             // if(s>Math.PI){
+                r2+= this.c*Math.cos(12*s);  
+              //}
+              
+
+          // //  // add surface manipulations
+           var surfrad = 0;
+            if (this.W1==0 || this.W2==0 || this.N==0) surfrad = 0;
+            else {
+              var lt = (Math.PI * 2 / this.N) * ( this.N* theta / Math.PI / 2 - Math.round(this.N* theta / Math.PI / 2) );
+              surfrad = this.L * Math.exp( -( Math.pow(2*(s-this.P)/this.W1, 2) + Math.pow(2*lt/this.W2, 2) ) );          
+            }
+             // console.log(surfrad)       ;
+           r2 += surfrad;
+                // console.log(r2)       ;
 
             var ellipseX = lastVertex.x + Math.cos(s + this.phi) * Math.cos(theta + this.omega) * r2 * rad * this.D;   // here  rad - 1 closes the opening of the curve at the origin
             var ellipseY = lastVertex.y + Math.cos(s + this.phi) * Math.sin(theta + this.omega) * r2 * rad;
@@ -289,13 +255,13 @@ class Seashell {
     // console.log("building tube");
     // console.log(this);
     var extrudeShapePoints = [], count = 30;
-    //section 
-    var a = 4;  //ellipse size 4.3
-    var b = .8;//1
+//section 
+    var a = this.eA;  //
+    var b = this.eB;//1
     var t =0;
 
-    var c = 0.2 ; //0.2 
-    var k = 5 ; //5
+    var c = 0 ; //0.2 
+    var k = 3  ; //5
     var tempX;
     var tempY;
 
@@ -305,8 +271,8 @@ class Seashell {
       tempX = Math.cos( t ) * b; 
       tempY = Math.sin( t ) * a; 
 
-      // tempX += -c*Math.cos(t*k) ;
-      // tempY += c*Math.sin(t*k) ;
+      tempX += c*Math.cos(t*k)* Math.cos(t);
+      tempY += c*Math.sin(t*k)* Math.sin(t);
 
       extrudeShapePoints.push( new THREE.Vector2 ( tempX, tempY));
     }
@@ -317,7 +283,7 @@ class Seashell {
 
     // add tube mesh for each point on the spiral 
     var l = this._spiral.length ;  
-    for (var i = 5; i<l; i++){
+    for (var i = 3 ; i<l; i++){
 
       // geometrySpiral.vertices.push(this._spiral[i]);  
       var oneEllipse = new THREE.Geometry(); 
